@@ -76,6 +76,7 @@ public class WebSecurityAndJwtConfig {
                         auth.requestMatchers(WHITE_LIST).permitAll()
                                 .requestMatchers("/api/auth/user").authenticated()
                                 .requestMatchers("/api/auth/signout").authenticated()
+                                .requestMatchers(HttpMethod.POST, "/api/notice/write").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.GET, "/api/users").hasRole("ADMIN")
                                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
                                 .anyRequest().authenticated()

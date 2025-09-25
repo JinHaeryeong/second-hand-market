@@ -4,19 +4,23 @@ import com.example.project.exception.DuplicateEmailException;
 import com.example.project.exception.DuplicateNicknameException;
 import com.example.project.exception.DuplicateUserIdException;
 import com.example.project.exception.ValidationException;
+import com.example.project.user.domain.ApiResponse;
 import com.example.project.user.domain.SignInRequest;
 import com.example.project.user.domain.SignUpRequest;
 import com.example.project.user.entity.Member;
 import com.example.project.user.entity.Role;
 import com.example.project.user.repository.MemberRepository;
+import com.example.project.user.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -27,6 +31,7 @@ public class UserService {
 
     private final MemberRepository memberRepository;
     private final BCryptPasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil;
 
     public Member createMember(SignUpRequest request){
         if (memberRepository.findByUserId(request.getId()).isPresent()) {
@@ -56,26 +61,37 @@ public class UserService {
         return newUser;
     }
 
-//    public Member signInMember(SignInRequest request) {
-//        // 1. 유저 ID로 회원 정보 찾기
-//        log.info("이거 signInMember 들어옴?");
-//        Member member = memberRepository.findByUserId(request.getUserId())
-//                .orElseThrow(() -> new UsernameNotFoundException("아이디 또는 비밀번호가 일치하지 않습니다."));
-//
-//        // 2. 입력된 비밀번호와 저장된 암호화된 비밀번호가 일치하는지 확인
-//        if (!passwordEncoder.matches(request.getPassword(), member.getUserPwd())) {
-//            // 비밀번호가 일치하지 않으면 BadCredentialsException을 던짐
-//            throw new BadCredentialsException("아이디 또는 비밀번호가 일치하지 않습니다.");
-//        }
-//
-//        // 3. 관리자 계정은 일반 로그인 페이지에서 로그인 차단
-//        if (member.getRole() == Role.ROLE_ADMIN) {
-//            throw new BadCredentialsException("관리자 계정은 여기서 로그인할 수 없습니다.");
-//        }
-//
-//        // 4. 모든 검증 통과 시 Member 객체 반환
-//        return member;
-//    }
+    public ApiResponse signIn(SignInRequest request, Role requiredRole) {
+        Optional<Member> optionalUser = memberRepository.findByUserId(request.getId());
+
+        if (optionalUser.isEmpty() || !passwordEncoder.matches(request.getPwd(), optionalUser.get().getPassword())) {
+            return ApiResponse.error("아이디 또는 비밀번호가 일치하지 않아요.", "UNMATCHED_CREDENTIALS");
+        }
+
+        Member user = optionalUser.get();
+
+        if (user.getRole() != requiredRole) {
+            return ApiResponse.error("아이디 또는 비밀번호가 일치하지 않아요.", "UNMATCHED_CREDENTIALS");
+        }
+
+        String accessToken = jwtUtil.generateAccessToken(user);
+        String refreshToken = jwtUtil.generateRefreshToken(user);
+
+        user.setRefreshToken(refreshToken);
+        updateRefreshToken(user); // DB에 리프레시 토큰 저장
+
+        return ApiResponse.success(
+                "로그인 되었습니다.",
+                Map.of("name", user.getName(),
+                        "email", user.getEmail(),
+                        "nickname", user.getNickname(),
+                        "id", user.getUserId(),
+                        "role", user.getRole(),
+                        "accessToken", accessToken,
+                        "refreshToken", refreshToken
+                )
+        );
+    }
 
     public Optional<Member> findByUserId(String userId) {
         return memberRepository.findByUserId(userId);

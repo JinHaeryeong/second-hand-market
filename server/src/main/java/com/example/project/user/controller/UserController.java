@@ -2,6 +2,7 @@ package com.example.project.user.controller;
 
 import com.example.project.user.domain.*;
 import com.example.project.user.entity.Member;
+import com.example.project.user.entity.Role;
 import com.example.project.user.service.UserService;
 import com.example.project.user.util.JwtUtil;
 import io.jsonwebtoken.Claims;
@@ -42,57 +43,8 @@ public class UserController {
     }
 
     @PostMapping("/signin")
-    public ResponseEntity<ApiResponse> signIn(@RequestBody SignInRequest request) {
-        log.info("signin 들어옴");
-
-        // 1. AuthenticationManager를 사용하여 인증 시도
-        // UsernamePasswordAuthenticationToken은 UserDetailsServiceImpl의 loadUserByUsername을 자동으로 호출
-//        Authentication authentication = authenticationManager.authenticate(
-//                new UsernamePasswordAuthenticationToken(request.getId(), request.getPwd())
-//        );
-//
-//        // 2. 인증 성공 시 SecurityContext에 인증 정보 저장
-//        SecurityContextHolder.getContext().setAuthentication(authentication);
-//
-//        // 3. 인증된 사용자 정보(UserDetails)를 가져와 Member 객체 조회
-//        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        Optional<Member> optionalUser = userService.findByUserId(request.getId());
-
-        // 사용자 정보가 없으면 에러 반환
-        if (optionalUser.isEmpty() || !passwordEncoder.matches(request.getPwd(), optionalUser.get().getPassword())) {
-            return ResponseEntity
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(ApiResponse.error("아이디 또는 비밀번호가 일치하지 않아요.", "UNMATHCED_ID_PWD"));
-        }
-
-        Member user = optionalUser.get();
-
-        if (user.getRole() == com.example.project.user.entity.Role.ROLE_ADMIN) {
-            return ResponseEntity
-                    .status(HttpStatus.UNAUTHORIZED)
-                    .body(ApiResponse.error("아이디 또는 비밀번호가 일치하지 않아요.", "ADMIN_LOGIN_NOT_ALLOWED"));
-        }
-
-        // 5. 액세스 및 리프레시 토큰 생성
-        String accessToken = jwtUtil.generateAccessToken(user);
-        String refreshToken = jwtUtil.generateRefreshToken(user);
-
-        // 6. DB에 리프레시 토큰 저장 및 업데이트
-        user.setRefreshToken(refreshToken);
-        userService.updateRefreshToken(user);
-
-        // 7. 토큰을 포함한 성공 응답 반환
-        return ResponseEntity
-                .ok(ApiResponse.success(
-                        "로그인 되었습니다.",
-                        Map.of("name", user.getName(),
-                                "email",user.getEmail(),
-                                "nickname", user.getNickname(),
-                                "id",user.getUserId(),
-                                "role",user.getRole(),
-                                "accessToken", accessToken,
-                                "refreshToken", refreshToken)
-                ));
+    public ResponseEntity<ApiResponse> userSignIn(@RequestBody SignInRequest request) {
+        return ResponseEntity.ok(userService.signIn(request, Role.ROLE_USER));
     }
     @PostMapping("/signout")
     public ResponseEntity<ApiResponse> signOut(@AuthenticationPrincipal Member member) {

@@ -1,4 +1,4 @@
-package com.example.project.user.controller;
+package com.example.project.post.controller;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
