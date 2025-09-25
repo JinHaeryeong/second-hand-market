@@ -1,0 +1,48 @@
+.notice-write-container {
+    margin: 0 auto;
+    width: 80%;
+}
+.notice-write-title-label {
+    color: rgb(60, 54, 54);
+    font-size: x-large;
+    font-weight: bolder;
+}
+.notice-write-title-input input {
+    width: 100%;
+    box-sizing: border-box;
+    margin: 10px 0px;
+    padding: 5px;
+    height: 40px;
+    border-radius: 5px;
+    border-style: solid;
+    border-color: rgb(187, 187, 187);
+    border-width: 1px;
+    outline: none;
+}
+.cke_notification.cke_notification_warning {
+    display: none;
+}
+.notice-write-btn-div {
+    margin-top: 10px;
+    text-align: center;
+}
+.notice-write-btn,
+.notice-write-cancel-btn {
+    padding: 10px;
+    width: 100px;
+    color: white;
+    font-size: large;
+    background-color: rgb(44, 83, 78);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.notice-write-cancel-btn {
+    margin-left: 5px;
+}
+
+.notice-write-btn:hover,
+.notice-write-cancel-btn:hover {
+    background-color: rgb(72, 125, 117);
+}

@@ -6,7 +6,8 @@
 }
 .main-top-desc-top {
     font-size: 3rem;
-    background: linear-gradient(90deg, #073261 0%, hsl(179, 86%, 31%) 30%, #d3fffb 90%);
+    background: linear-gradient(to right, #05274b 20%, hsl(179, 86%, 31%) 45%, #d3fffb 70%);
+
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;

@@ -11,6 +11,25 @@
 }
 .nav-list-left-item {
     margin-right: 10px;
+    font-weight: 600;
+    cursor: pointer;
+}
+.underline {
+    display: block;
+    height: 2px;
+    background-color: rgb(55, 76, 73);
+
+    width: 100%;
+
+    transform-origin: center;
+
+    transform: scaleX(0);
+
+    transition: transform 0.3s ease-in-out;
+}
+
+.nav-list-left-item:hover .underline {
+    transform: scaleX(1);
 }
 .nav-list-item {
     width: fit-content;

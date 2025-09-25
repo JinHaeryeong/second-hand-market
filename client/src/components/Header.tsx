@@ -1,13 +1,19 @@
 import { Link, useNavigate } from "react-router-dom";
 import '../assets/styles/header.css'
-import { AlertCircle, LogOut, User2, User2Icon, UserPlus2 } from "lucide-react";
+import "@radix-ui/themes/styles.css";
+import { AlertCircle, LogOut, User2, UserPlus2, UsersRound } from "lucide-react";
 import { useAuthStore } from "../stores/authStore";
 import { apiSignOut } from "../api/userApi";
 import axios from "axios";
+const leftNav = [
+    { name: "공지사항", link: "/notices" },
+    { name: "장터", link: "/market" },
+    { name: "알아보기", link: "/about" }
+];
 const Header = () => {
     const authUser = useAuthStore((s: any) => s.authUser);
     const signOut = useAuthStore((s: any) => s.signout);
-    // console.log(authUser);
+    console.log(authUser);
 
     const navigate = useNavigate();
     const handleSignOut = async () => {
@@ -22,6 +28,8 @@ const Header = () => {
                 signOut();
                 sessionStorage.removeItem('accessToken');
                 localStorage.removeItem('refreshToken');
+                sessionStorage.removeItem("authUser");
+                localStorage.removeItem("authUser");
                 navigate('/');
             }
         } catch (error) {
@@ -43,21 +51,30 @@ const Header = () => {
                     <img src="/images/second-logo.png" width="187px" height="47px" alt="로고" />
                 </Link>
                 <ul className="nav-list">
-                    <li className="nav-list-left-item">공지사항</li>
-                    <li className="nav-list-left-item">장터</li>
-                    <li className="nav-list-left-item">더알아보기</li>
+
+
+                    {leftNav.map((item, index) => (
+                        <div key={index}>
+                            <li className="nav-list-left-item">
+                                <Link to={item.link}>{item.name}</Link>
+                                <span className="underline" />
+                            </li>
+                        </div>
+                    ))}
                 </ul>
             </div>
             <div>
                 <ul className="nav-list">
-                    <AlertCircle />
+                    <li className="nav-list-item">
+                        <AlertCircle />
+                    </li>
                     {!authUser && (
                         <><Link to="/signin"><li className="nav-list-item"><User2 /></li></Link><Link to="/signup"><li className="nav-list-item"><UserPlus2 /></li></Link></>
                     )}
+                    {authUser && authUser.role === "ROLE_ADMIN" && <li className="nav-list-item"><UsersRound /></li>}
                     {authUser && (
                         <>
-
-                            <li className="nav-list-item"><User2Icon /></li>
+                            <li className="nav-list-item"><User2 /></li>
                             <li className="nav-list-item"><LogOut onClick={handleSignOut} /></li>
                         </>
                     )}

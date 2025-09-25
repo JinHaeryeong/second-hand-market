@@ -1,6 +1,6 @@
-import { devtools } from "zustand/middleware";
+import { devtools, persist, createJSONStorage } from "zustand/middleware";
 import { create } from "zustand";
-// authStore.js
+
 interface AuthState {
     authUser: {
         name: string;
@@ -14,19 +14,21 @@ interface AuthState {
     signInAuthUser: (user: AuthState['authUser']) => void;
     signout: () => void;
 }
-export const useAuthStore = create<AuthState>()(
-    devtools((set) => ({
-        authUser: null, // 인증받은 사용자 정보 초기값
-        // 사용자 정보를 받아 authUser 상태를 업데이트하는 액션
-        signInAuthUser: (user) =>
-            set({
-                authUser: user,
-            }),
-        // 로그아웃 시 authUser를 null로 설정하는 액션
-        signout: () =>
-            set({
-                authUser: null,
-            }),
-    }))
-);
 
+export const useAuthStore = create<AuthState>()(
+    // devtools를 persist 안에 넣어 두 기능 모두 사용
+    persist(
+        devtools((set) => ({
+            authUser: null, // 초기값 설정
+
+            signInAuthUser: (user) => set({ authUser: user }),
+
+            signout: () => set({ authUser: null }),
+        })),
+        {
+            name: "authUser", // 1. sessionStorage에 저장될 키 이름
+            storage: createJSONStorage(() => sessionStorage), // 2. sessionStorage 사용
+            partialize: (state) => ({ authUser: state.authUser }), // 3. authUser만 저장
+        }
+    )
+);
