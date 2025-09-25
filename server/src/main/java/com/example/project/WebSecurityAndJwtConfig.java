@@ -1,4 +1,4 @@
-package com.example.project.config;
+package com.example.project;
 
 import com.example.project.filter.JwtFilter;
 import com.example.project.user.repository.MemberRepository;
