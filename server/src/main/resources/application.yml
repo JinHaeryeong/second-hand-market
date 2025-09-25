@@ -1,0 +1,8 @@
+server:
+  devtools:
+    livereload:
+      enabled: true
+spring:
+  profiles:
+    #    active: prod #?? ?? ?? application-prod.yml ? ??
+    active: dev  # ?? ??? ?  application-dev.yml? ??
