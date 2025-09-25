@@ -9,7 +9,9 @@ public class WebConfig  implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/api/file/**")//웹에서 접근할 경로
-                .addResourceLocations("file:///C:/Users/insen/devSource/second-hand-platform/uploads/");//실제 저장 경로
+//                .addResourceLocations("file:///C:/Users/insen/devSource/second-hand-platform/uploads/");//실제 저장 경로
+                // 컴퓨터에서 할 때 경로
+                .addResourceLocations("file:///C:/Users/진해령/devSource/second-hand-market/uploads/");//실제 저장 경로
         ///  C:/Users/insen/devSource/second-hand-platform/uploads
     }
 }
