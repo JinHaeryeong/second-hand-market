@@ -11,21 +11,23 @@ const NoticeWrite = () => {
     const navigate = useNavigate();
     const editorRef = useRef<HTMLTextAreaElement>(null);
     const titleRef = useRef<HTMLInputElement>(null);
+    const ckeditorInstance = useRef<any>(null);
 
     const handleChange = (e: any) => {
         setNotice({ ...notice, [e.target.name]: e.target.value });
     }
 
-    const check = () => {
-        const { title, content } = notice;
-        console.log("타이틀 : " + title + ", 본문: " + content);
+    const check = (finalContent: string) => {
+        const { title } = notice;
+
+        console.log("타이틀 : " + title + ", 본문: " + finalContent);
 
         if (!title.trim()) {
             alert("제목을 작성해주세요!");
             titleRef.current?.focus();
             return false;
         }
-        if (!content.trim()) {
+        if (!finalContent.trim()) {
             alert("본문을 작성해주세요!");
             editorRef.current?.focus();
             return false;
@@ -43,14 +45,17 @@ const NoticeWrite = () => {
             alert("작성 권한이 없습니다.");
             return;
         }
-        const b = check();
+
+
+        const finalContent = ckeditorInstance.current ? ckeditorInstance.current.getData() : notice.content;
+        const b = check(finalContent);
         if (!b) {
             return;
         }
         const noticeData = {
             userId: authUser.id,
             title: notice.title,
-            content: notice.content
+            content: finalContent
         };
         try {
             const response = await apiNoticeWrite(noticeData);
@@ -102,6 +107,8 @@ const NoticeWrite = () => {
             const editorInstance = CKEDITOR.replace(editorRef.current, {
                 filebrowserUploadUrl: '/api/file/uploads',
             });
+
+            ckeditorInstance.current = editorInstance;
             editorInstance.on('change', () => {
                 const data = editorInstance.getData();
 
