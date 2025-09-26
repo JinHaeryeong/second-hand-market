@@ -23,19 +23,33 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class NoticeService {
 
     private final NoticeRepository noticeRepository;
+    private static final Safelist CUSTOM_SAFELIST;
+
+    static {
+        Safelist safelist = Safelist.relaxed();
+
+        safelist.addTags("img");
+
+        safelist.addAttributes("img", "src", "alt", "width", "height", "style");
+
+        safelist.removeProtocols("img", "src", "http", "https");
+
+        safelist.preserveRelativeLinks(true);
+
+
+
+        CUSTOM_SAFELIST = safelist;
+    }
     private Safelist getCustomSafelist() {
-        Safelist customSafelist = Safelist.relaxed();
-        customSafelist.addTags("img");
-        customSafelist.addAttributes("img", "src", "alt", "width", "height", "style");
-        customSafelist.preserveRelativeLinks(true);
-        return customSafelist;
+        return CUSTOM_SAFELIST;
     }
     public ApiResponse<?> noticeWrite(NoticeWriteRequest request) {
 
         try {
             String unsafeContent = request.getContent();
+            log.info(unsafeContent);
             String safeContent = Jsoup.clean(unsafeContent, getCustomSafelist()); // ⭐️ 정화된 내용 사용
-
+            log.info(safeContent);
 
             Notices entity = Notices.builder()
                     .userId(request.getUserId())

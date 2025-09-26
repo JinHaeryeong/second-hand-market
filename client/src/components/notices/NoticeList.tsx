@@ -12,7 +12,12 @@ const NoticeList = () => {
     const setPage = usePostStore((s: any) => s.setPage);
     const page = usePostStore((s: any) => s.page);
 
-    // console.log(authUser.id);
+    useEffect(() => {
+
+        if (page !== 1) {
+            setPage(1);
+        }
+    }, []);
     useEffect(() => {
         fetchPostList();
     }, [page]);
