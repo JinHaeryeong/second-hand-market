@@ -1,5 +1,6 @@
 // authUtils.js
 import axios from "axios";
+import { useAuthStore } from "../stores/authStore";
 
 export const checkTokenExpiration = (token: string) => {
     try {
@@ -17,9 +18,11 @@ export const checkTokenExpiration = (token: string) => {
 };
 // 리프레시 토큰으로 서버에 요청 보내기
 export const refreshAccessToken = async () => {
-    const refreshToken = localStorage.getItem("refreshToken");
+    const authUser = useAuthStore.getState().authUser;
+    const refreshToken = authUser?.refreshToken;
     if (!refreshToken) {
         console.log("refreshToken 없음");
+        useAuthStore.getState().signout();
         return null;
     }
     // 리프레시 토큰을 보내 새로운 서버에서 검증은 후 새 액세스토큰을 받자
@@ -38,6 +41,7 @@ export const refreshAccessToken = async () => {
         return newAccessToken;
     } catch (error) {
         console.error(`refreshToken error: ${error}`);
+        useAuthStore.getState().signout();
         return null;
     }
 };

@@ -40,6 +40,7 @@ public class WebSecurityAndJwtConfig {
             "/api/auth/signup",
             "/api/auth/signin",
             "/api/auth/refresh",
+            "/api/notices/**",
             "/api/file/**",
             "/api/admin/signin"
     };

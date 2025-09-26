@@ -44,9 +44,9 @@ const SignIn = ({ loginType }: { loginType: string }) => {
             console.log("로그인 응답:" + data);
             if (result === "success") {
                 alert("로그인을 완료하였습니다.");
-                const { accessToken, refreshToken } = data;
-                sessionStorage.setItem("accessToken", accessToken);
-                localStorage.setItem("refreshToken", refreshToken);
+                // const { accessToken, refreshToken } = data;
+                // sessionStorage.setItem("accessToken", accessToken);
+                // localStorage.setItem("refreshToken", refreshToken);
                 // 회원정보(payload), 토큰...=> data를 store에 전달. 인증받은 사용자 => 전역 state로 관리하자
                 signInAuthUser({ ...data });
                 navigate("/");

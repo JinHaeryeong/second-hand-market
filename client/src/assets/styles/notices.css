@@ -1,3 +1,54 @@
+.notices-container,
+.notice-container {
+    width: 90%;
+    margin: 0 auto;
+}
+.notice-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.notice-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    border-bottom: 1px solid #eee;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+}
+
+.notice-item:hover {
+    background-color: #f9f9f9;
+}
+
+.item-title {
+    font-weight: 600;
+    flex-grow: 1;
+    margin-right: 20px;
+}
+
+.item-meta {
+    display: flex;
+    gap: 15px;
+    font-size: 0.9em;
+    color: #666;
+}
+
+@media (max-width: 600px) {
+    .notice-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .item-meta {
+        margin-top: 5px;
+        flex-direction: row;
+    }
+}
 .notice-write-container {
     margin: 0 auto;
     width: 80%;
@@ -7,6 +58,39 @@
     font-size: x-large;
     font-weight: bolder;
 }
+.page-container {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    margin: 0 auto;
+}
+.prev-btn,
+.next-btn {
+    border: none;
+    padding: 10px;
+    color: #5f9ea0;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.pagination-btn {
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+}
+.pagination-btn:first-child {
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+.pagination-btn:last-child {
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+.selected-page {
+    background-color: #5f9ea0;
+    color: white;
+}
+
 .notice-write-title-input input {
     width: 100%;
     box-sizing: border-box;
@@ -24,10 +108,22 @@
 }
 .notice-write-btn-div {
     margin-top: 10px;
-    text-align: center;
+    text-align: right;
+}
+
+.notice-btns {
+    text-align: right;
+}
+.notice-btns .notice-delete {
+    background-color: rgb(17, 45, 41);
+}
+.notice-btn {
+    margin-left: 5px;
+    box-sizing: border-box;
 }
 .notice-write-btn,
-.notice-write-cancel-btn {
+.notice-write-cancel-btn,
+.notice-btn {
     padding: 10px;
     width: 100px;
     color: white;
@@ -43,6 +139,7 @@
 }
 
 .notice-write-btn:hover,
-.notice-write-cancel-btn:hover {
+.notice-write-cancel-btn:hover,
+.notice-btn:hover {
     background-color: rgb(72, 125, 117);
 }

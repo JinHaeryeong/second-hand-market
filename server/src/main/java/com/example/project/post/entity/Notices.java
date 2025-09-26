@@ -39,6 +39,7 @@ public class Notices {
     private LocalDateTime updatedAt;
 
     @ColumnDefault("0")
+    @Setter
     @Builder.Default
     private int views = 0;
 }

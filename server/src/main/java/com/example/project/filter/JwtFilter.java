@@ -83,22 +83,22 @@ public class JwtFilter extends OncePerRequestFilter {
             ctx.setAuthentication(authToken);
             log.info("인증된 사용자 권한: {}", ctx.getAuthentication().getAuthorities());
             log.info("인증된 객체*****{}", ctx.getAuthentication().getPrincipal());
+            filterChain.doFilter(request, response);
+
 
         }catch (io.jsonwebtoken.ExpiredJwtException expiredEx) {
             log.error("토큰 만료: {}", expiredEx.getMessage());
             // 🌟 만료 시 401을 명확하게 반환하여 프론트엔드의 401 인터셉터가 작동하도록 유도 🌟
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getWriter().write("액세스 토큰이 만료되었습니다.");
-            return; // 필터 체인 종료
+            return;
         }
         catch (Exception e) {
         log.error("토큰 검증 중 에러...", e);
         SecurityContextHolder.clearContext();
-//        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-//        response.getWriter().write("토큰이 유효하지 않습니다.");
-//        return;
-    } finally {
-        filterChain.doFilter(request, response);
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.getWriter().write("토큰이 유효하지 않습니다.");
+        return;
     }
 
 }

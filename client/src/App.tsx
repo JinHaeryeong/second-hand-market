@@ -5,11 +5,9 @@ import Footer from './components/Footer';
 import Home from './pages/Home'
 import SignUp from './components/member/SignUp';
 import SignIn from './components/member/SignIn';
-import { useAuthStore } from './stores/authStore';
-import axiosAuthInstance from './api/axiosAuthInstance';
-import { useEffect } from 'react';
 import Notices from './pages/Notices';
 import NoticeWrite from './components/notices/NoticeWrite';
+import Notice from './pages/Notice';
 
 function App() {
   // const signInAuthUser = useAuthStore((s) => s.signInAuthUser);
@@ -53,6 +51,7 @@ function App() {
           <Route path="/signIn" element={<SignIn loginType="user" />} />
           <Route path='/signUp' element={<SignUp />} />
           <Route path='/notices' element={<Notices />} />
+          <Route path='/notice/:id' element={<Notice />} />
           <Route path='/noticeWrite' element={<NoticeWrite />} />
         </Routes>
       </BrowserRouter>

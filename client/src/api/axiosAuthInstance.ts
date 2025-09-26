@@ -91,6 +91,7 @@
 // );
 import axios from "axios";
 import { checkTokenExpiration, refreshAccessToken } from "../utils/authUtils";
+import { useAuthStore } from "../stores/authStore";
 
 const axiosAuthInstance = axios.create({
     baseURL: `http://localhost:8080/api`,
@@ -104,8 +105,8 @@ export default axiosAuthInstance;
 // [1] 요청 인터셉터: 토큰 추가 및 만료 시 갱신 시도
 axiosAuthInstance.interceptors.request.use(
     async (config) => {
-        const accessToken = sessionStorage.getItem("accessToken");
-        const refreshToken = localStorage.getItem("refreshToken");
+        const authStore = useAuthStore.getState();
+        const accessToken = authStore.authUser?.accessToken;
 
         if (accessToken) {
             // 1. 토큰이 존재하면 일단 헤더에 설정 (만료 여부와 무관)
@@ -115,25 +116,22 @@ axiosAuthInstance.interceptors.request.use(
             if (checkTokenExpiration(accessToken)) {
                 console.log(`요청 인터셉터: 만료 토큰 감지. 갱신 시도.`);
 
-                if (refreshToken) {
-                    try {
-                        const newAccessToken = await refreshAccessToken();
-                        if (newAccessToken) {
-                            sessionStorage.setItem("accessToken", newAccessToken);
-                            // 3. 새 토큰으로 헤더 교체
-                            config.headers["Authorization"] = `Bearer ${newAccessToken}`;
-                        }
-                    } catch (error) {
-                        // 4. 리프레시 실패 시 (RefreshToken 만료/오류)
-                        console.error("액세스 토큰 갱신 실패. 강제 로그아웃 처리.");
-                        // 강제 로그아웃 처리는 응답 인터셉터 401 로직과 동일하게 수행하거나,
-                        // 여기서 Promise.reject를 통해 401/403을 유발하여 응답 인터셉터로 넘깁니다.
-                        return Promise.reject(error);
+
+                try {
+                    const newAccessToken = await refreshAccessToken();
+                    if (newAccessToken) {
+                        // 갱신 성공: 새 토큰으로 헤더 교체
+                        config.headers["Authorization"] = `Bearer ${newAccessToken}`;
+                    } else {
+                        // 갱신 실패 (signout이 이미 실행됨)
+                        return Promise.reject(new Error("토큰 갱신 실패로 요청 중단"));
                     }
-                } else {
-                    // RefreshToken 자체가 없으면 로그인 페이지로 이동
-                    window.location.href = "/";
-                    return Promise.reject(new Error("리프레시 토큰이 없습니다."));
+                } catch (error) {
+                    // 4. 리프레시 실패 시 (RefreshToken 만료/오류)
+                    console.error("액세스 토큰 갱신 실패. 강제 로그아웃 처리.");
+                    // 강제 로그아웃 처리는 응답 인터셉터 401 로직과 동일하게 수행하거나,
+                    // 여기서 Promise.reject를 통해 401/403을 유발하여 응답 인터셉터로 넘깁니다.
+                    return Promise.reject(error);
                 }
             }
         }
@@ -152,42 +150,36 @@ axiosAuthInstance.interceptors.response.use(
         const status = err.response?.status;
         const originalRequest = err.config;
 
-        if (status === 400) {
-            alert(err.response.data?.message);
+        if (status === 400 || status === 403) {
+            // 400 (Bad Request) 또는 403 (Forbidden: 인가 실패)
+            alert(err.response.data?.message || (status === 403 ? "접근 권한이 없습니다." : "잘못된 요청입니다."));
             window.location.href = "/";
             return Promise.reject(err);
         }
 
-        // 401 Unauthorized 처리 (토큰 만료 시 서버가 401을 반환하도록 백엔드 수정 필요)
-        if (status === 401 && !originalRequest._retry) {
-            originalRequest._retry = true; // 재시도 플래그 설정
+        // 401 Unauthorized 처리 (서버가 401을 보냈을 때의 방어 로직)
+        if (status === 401 && originalRequest && !originalRequest._retry) {
+            originalRequest._retry = true;
 
             try {
+                // 1. 재발급 시도 (성공 시 Store 갱신)
                 const newAccessToken = await refreshAccessToken();
+
                 if (newAccessToken) {
-                    sessionStorage.setItem("accessToken", newAccessToken);
+                    // 2. 갱신 성공: 헤더 교체 및 원래 요청 재시도
                     originalRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
-                    return axiosAuthInstance(originalRequest); // 원래 요청 재시도
+                    return axiosAuthInstance(originalRequest);
                 }
             } catch (error) {
-                console.error("리프레시 토큰이 유효하지 않아 로그아웃 처리됨.", error);
+                console.error("응답 인터셉터: 재발급 요청 중 오류 발생.", error);
             }
 
-            // 리프레시 실패 시: 세션/로컬 스토리지 정리 후 리다이렉트
-            localStorage.removeItem("refreshToken");
-            localStorage.removeItem("authUser");
-            sessionStorage.removeItem("accessToken");
-            sessionStorage.removeItem("authUser");
+            // 3. 갱신 실패 확정: 강제 로그아웃
+            // authUtils에서 signout이 이미 호출되었으므로, 리다이렉션만 수행
             window.location.href = "/";
             return Promise.reject(err);
         }
 
-        if (status === 403) {
-            // 인가받지 않은 사용자 (권한이 없는 경우: ROLE_ADMIN 미보유)
-            alert("접근 권한이 없습니다.");
-            window.location.href = "/";
-            return Promise.reject(err);
-        }
         return Promise.reject(err);
     }
 );
