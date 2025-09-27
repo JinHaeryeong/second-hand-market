@@ -45,7 +45,7 @@ interface PostActions {
     fetchPostList: (findType: number) => Promise<void>;
     deletePost: (id: number) => Promise<boolean>; // id 타입을 string으로 가정
     fetchPostById: (id: number) => Promise<void>;
-    updatePost: (id: number, formData: any) => Promise<boolean>;
+    updatePost: (id: number, notice: any) => Promise<boolean>;
 }
 
 // ⭐️ PostStore 타입을 PostState와 PostActions를 합친 것으로 정의
@@ -126,9 +126,9 @@ export const usePostStore = create<PostStore>()(
             }
         },
         //글 수정 처리
-        updatePost: async (id: number, formData: any) => {
+        updatePost: async (id: number, notice: any) => {
             try {
-                await apiUpdatePost(id, formData);
+                await apiUpdatePost(id, notice);
                 return true;
             } catch (error) {
                 console.error(error);

@@ -11,6 +11,15 @@
     flex-direction: column;
     gap: 10px;
 }
+.notice-title {
+    font-size: 3rem;
+}
+.notice-info {
+    display: flex;
+}
+.notice-info-item {
+    margin-right: 10px;
+}
 
 .notice-item {
     display: flex;
@@ -123,7 +132,9 @@
 }
 .notice-write-btn,
 .notice-write-cancel-btn,
-.notice-btn {
+.notice-btn,
+.delete-confirm-btn,
+.delete-cancel-btn {
     padding: 10px;
     width: 100px;
     color: white;
@@ -133,6 +144,10 @@
     border-radius: 5px;
     cursor: pointer;
 }
+.delete-confirm-btn {
+    margin-right: 5px;
+    background-color: rgb(17, 45, 41);
+}
 
 .notice-write-cancel-btn {
     margin-left: 5px;
@@ -140,6 +155,11 @@
 
 .notice-write-btn:hover,
 .notice-write-cancel-btn:hover,
-.notice-btn:hover {
+.notice-btn:hover,
+.delete-cancel-btn:hover,
+.delete-confirm-btn:hover {
     background-color: rgb(72, 125, 117);
+}
+.delete-confirm {
+    text-align: center;
 }

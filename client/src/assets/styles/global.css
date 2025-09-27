@@ -18,3 +18,34 @@ header {
     justify-content: space-between;
     box-sizing: border-box;
 }
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 60;
+}
+.modal {
+    background-color: #fff;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    width: 24rem;
+    overflow-y: auto;
+}
+
+.modal-title {
+    font-size: 2.25rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.modal-content {
+    margin-bottom: 1rem;
+    overflow-y: auto;
+    color: #4a4a4a;
+}

@@ -8,6 +8,7 @@ import SignIn from './components/member/SignIn';
 import Notices from './pages/Notices';
 import NoticeWrite from './components/notices/NoticeWrite';
 import Notice from './pages/Notice';
+import NoticeEdit from './components/notices/NoticeEdit';
 
 function App() {
   // const signInAuthUser = useAuthStore((s) => s.signInAuthUser);
@@ -52,6 +53,7 @@ function App() {
           <Route path='/signUp' element={<SignUp />} />
           <Route path='/notices' element={<Notices />} />
           <Route path='/notice/:id' element={<Notice />} />
+          <Route path='/notice/edit/:id' element={<NoticeEdit />} />
           <Route path='/noticeWrite' element={<NoticeWrite />} />
         </Routes>
       </BrowserRouter>

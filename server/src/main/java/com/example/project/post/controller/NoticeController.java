@@ -1,5 +1,6 @@
 package com.example.project.post.controller;
 
+import com.example.project.post.domain.NoticeEditRequest;
 import com.example.project.post.domain.NoticeWriteRequest;
 import com.example.project.post.domain.NoticesListRequest;
 import com.example.project.post.entity.Notices;
@@ -56,5 +57,19 @@ public class NoticeController {
 
         ApiResponse<NoticesListRequest> response = noticeService.getPostById(id);
         return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deletePostById(@PathVariable Integer id) {
+        log.info("id==={}", id);
+        ApiResponse<?> response  = noticeService.deletePostById(id);
+        return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> editPostById(@PathVariable Integer id, @RequestBody NoticeEditRequest noticeEditRequest) {
+        ApiResponse<?> reponse = noticeService.editPostById(id, noticeEditRequest);
+
+        return ResponseEntity.ok(reponse);
     }
 }

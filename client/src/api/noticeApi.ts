@@ -37,13 +37,8 @@ export const apiFetchPostByIdWithSpring = async (id: number) => {
     return response.data;
 };
 //---notice글 수정하기 -----------------------------------
-export const apiUpdatePost = async (id: number, formData: any) => {
-    await axiosInstance.put(`/notices/${id}`, formData);
-    /*
-    , {
-        headers: {
-            'Content-Type': 'multipart/form-data',
-        },
-    }
-    */
+export const apiUpdatePost = async (id: number, notice: any) => {
+    console.log(notice);
+    await axiosInstance.put(`/notices/${id}`, notice);
+
 };
