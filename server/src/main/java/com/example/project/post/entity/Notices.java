@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 @Table(name = "notices")
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Setter
 @Getter
 @AllArgsConstructor
 @ToString
@@ -39,7 +40,6 @@ public class Notices {
     private LocalDateTime updatedAt;
 
     @ColumnDefault("0")
-    @Setter
     @Builder.Default
     private int views = 0;
 }

@@ -1,7 +1,8 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { usePostStore } from "../../stores/postStore";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAuthStore } from "../../stores/authStore";
+import Modal from "../modal";
 
 const NoticeDetail = () => {
     const { id } = useParams();
@@ -14,6 +15,9 @@ const NoticeDetail = () => {
     const postErr = usePostStore((s) => s.postErr);
     const resetPostErr = usePostStore((s) => s.resetPostErr);
     const postId = id ? Number(id) : null;
+
+    const [isOpenMdoal, setIsModalOpen] = useState(false);
+
     useEffect(() => {
         if (postId && !isNaN(postId)) {
             fetchPostById(postId);
@@ -36,18 +40,43 @@ const NoticeDetail = () => {
             </div>
         );
     }
+    //공지사항 수정 관련
+    const handleEditNotice = () => {
+        navigate(`/notice/edit/${id}`);
+    }
+
+    //공지사항 삭제 모달 관련
+    const openDeleteInModal = () => {
+        setIsModalOpen(true);
+    };
+
+    const closeDelteModal = () => {
+        setIsModalOpen(false);
+    };
+
+    const handleDeleteConfirm = () => {
+        if (postId) {
+            deletePost(postId);
+        }
+        alert("공지사항을 삭제했습니다.");
+        navigate("/notices");
+    }
+    //
+
+
 
 
     return (
         <div className="notice-container">
             <div>
-                <div>
+                <div className="notice-title">
                     {post.title}
                 </div>
-                <div>
-                    <div>{post.userId}</div>
-                    <div>
-                        {new Intl.DateTimeFormat('ko-KR', {
+                <div className="notice-info">
+                    <div className="notice-info-item">작성자 {post.userId}</div>
+                    <div className="notice-info-item">조회수 {post.views}</div>
+                    <div className="notice-info-item">
+                        작성일시 {new Intl.DateTimeFormat('ko-KR', {
                             year: 'numeric',
                             month: '2-digit',
                             day: '2-digit',
@@ -57,18 +86,30 @@ const NoticeDetail = () => {
                             hour12: true
                         }).format(new Date(post.createdAt))}
                     </div>
-                    <div>{post.views}</div>
                 </div>
                 <div
-                    dangerouslySetInnerHTML={{ __html: post.content }} >
+                    dangerouslySetInnerHTML={{ __html: post.content }} className="notice-content">
                 </div>
             </div>
             {authUser && authUser.id === post.userId && (
                 <div className="notice-btns">
-                    <button className="notice-btn notice-edit">수정하기</button>
-                    <button className="notice-btn notice-delete">삭제하기</button>
+                    <button className="notice-btn notice-edit" onClick={handleEditNotice}>수정하기</button>
+                    <button className="notice-btn notice-delete" onClick={openDeleteInModal}>삭제하기</button>
                 </div>
             )}
+            {isOpenMdoal && (
+                <Modal isOpen={isOpenMdoal} onClose={closeDelteModal} title="공지사항 삭제" actions={
+                    <div className="delete-confirm">
+                        <button onClick={handleDeleteConfirm} className="delete-confirm-btn" >삭제</button>
+                        <button onClick={closeDelteModal} className="delete-cancel-btn">취소</button>
+                    </div>
+                }>
+                    <div className="delete-content">삭제한 공지사항은 되돌릴 수 없습니다😥 정말 삭제하시겠습니까?</div>
+                </Modal>
+            )}
+            <hr />
+            <div>다음글</div>
+            <div>이전글</div>
         </div>
 
     );
