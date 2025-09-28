@@ -1,4 +1,4 @@
-import MemberList from "../components/member/MemberList";
+import MemberList from "../components/admin/MemberList";
 import '../assets/styles/member.css';
 const Member = () => {
     return (

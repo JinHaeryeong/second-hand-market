@@ -1,7 +1,5 @@
 import './assets/styles/global.css'
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Header from './components/Header';
-import Footer from './components/Footer';
 import Home from './pages/Home'
 import SignUp from './components/member/SignUp';
 import SignIn from './components/member/SignIn';
@@ -9,10 +7,11 @@ import Notices from './pages/Notices';
 import NoticeWrite from './components/notices/NoticeWrite';
 import Notice from './pages/Notice';
 import NoticeEdit from './components/notices/NoticeEdit';
-import Member from './pages/Member';
 import DefaultLayout from './layout/DefaultLayout';
 import AdminLayout from './layout/AdminLayout';
-import MemberList from './components/member/MemberList';
+import MemberList from './components/admin/MemberList';
+import DashBoard from './components/admin/DashBoard';
+import ItemList from './components/admin/ItemList';
 
 function App() {
   // const signInAuthUser = useAuthStore((s) => s.signInAuthUser);
@@ -62,7 +61,11 @@ function App() {
             <Route path='/market' />
             <Route path='/about' />
           </Route>
-          <Route path='/admin/dashboard' element={<AdminLayout />}>
+          <Route path='/admin-page' element={<AdminLayout />}>
+            <Route index element={<DashBoard />} />
+            <Route path='dashboard' element={<DashBoard />} />
+            <Route path='users' element={<MemberList />} />
+            <Route path='items' element={<ItemList />} />
           </Route>
         </Routes>
       </BrowserRouter>

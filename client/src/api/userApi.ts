@@ -15,7 +15,3 @@ export const apiSignOut = async ({ id }: { id: string }) => {
     return response.data;
 };
 
-export const apiAdminSignIn = async (signUser: any) => {
-    const response = await axiosInstance.post("/admin/signin", signUser); // /api/auth/admin
-    return response.data;
-}

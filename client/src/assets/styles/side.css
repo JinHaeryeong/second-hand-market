@@ -1,0 +1,29 @@
+.side {
+    margin: 0;
+    padding: 0;
+    position: sticky;
+    width: 13.5rem;
+    height: 100vh;
+    background-color: rgb(224, 224, 224);
+    /* position: fixed;
+  left: 19rem;
+  top: 12rem;
+  transform: translate(1em, 12rem); */
+}
+.admin-logo {
+    padding: 15px;
+}
+.side-navigation-panel
+    .side-navigation-panel-select
+    .side-navigation-panel-select-wrap
+    .side-navigation-panel-select-option:hover {
+    border-color: #3c7476;
+    border-left-width: 3px;
+}
+.side-navigation-panel
+    .side-navigation-panel-select
+    .side-navigation-panel-select-wrap
+    .side-navigation-panel-select-option-selected {
+    border-color: #3c7476;
+    border-left-width: 3px;
+}

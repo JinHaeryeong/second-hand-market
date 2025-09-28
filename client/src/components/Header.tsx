@@ -71,7 +71,7 @@ const Header = () => {
                     {!authUser && (
                         <><Link to="/signin"><li className="nav-list-item"><User2 /></li></Link><Link to="/signup"><li className="nav-list-item"><UserPlus2 /></li></Link></>
                     )}
-                    {authUser && authUser.role === "ROLE_ADMIN" && <li className="nav-list-item"><Link to="/admin/dashboard"><HatGlasses /></Link></li>}
+                    {authUser && authUser.role === "ROLE_ADMIN" && <li className="nav-list-item"><Link to="/admin-page/dashboard"><HatGlasses /></Link></li>}
                     {authUser && (
                         <>
                             <li className="nav-list-item"><User2 /></li>
