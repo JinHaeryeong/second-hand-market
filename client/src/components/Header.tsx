@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import '../assets/styles/header.css'
 import "@radix-ui/themes/styles.css";
-import { AlertCircle, LogOut, User2, UserPlus2, UsersRound } from "lucide-react";
+import { AlertCircle, HatGlasses, LogOut, User2, UserPlus2, UsersRound } from "lucide-react";
 import { useAuthStore } from "../stores/authStore";
 import { apiSignOut } from "../api/userApi";
 import axios from "axios";
@@ -71,7 +71,7 @@ const Header = () => {
                     {!authUser && (
                         <><Link to="/signin"><li className="nav-list-item"><User2 /></li></Link><Link to="/signup"><li className="nav-list-item"><UserPlus2 /></li></Link></>
                     )}
-                    {authUser && authUser.role === "ROLE_ADMIN" && <li className="nav-list-item"><UsersRound /></li>}
+                    {authUser && authUser.role === "ROLE_ADMIN" && <li className="nav-list-item"><Link to="/admin/dashboard"><HatGlasses /></Link></li>}
                     {authUser && (
                         <>
                             <li className="nav-list-item"><User2 /></li>

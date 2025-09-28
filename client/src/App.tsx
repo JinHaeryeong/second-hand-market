@@ -9,6 +9,10 @@ import Notices from './pages/Notices';
 import NoticeWrite from './components/notices/NoticeWrite';
 import Notice from './pages/Notice';
 import NoticeEdit from './components/notices/NoticeEdit';
+import Member from './pages/Member';
+import DefaultLayout from './layout/DefaultLayout';
+import AdminLayout from './layout/AdminLayout';
+import MemberList from './components/member/MemberList';
 
 function App() {
   // const signInAuthUser = useAuthStore((s) => s.signInAuthUser);
@@ -44,21 +48,24 @@ function App() {
   return (
     <div className="container">
       <BrowserRouter>
-        <Header />
-        <hr className="nav-hr" />
+
         <Routes>
-          <Route path='/' element={<Home />} />
-          <Route path='/admin' element={<SignIn loginType="admin" />} />
-          <Route path="/signIn" element={<SignIn loginType="user" />} />
-          <Route path='/signUp' element={<SignUp />} />
-          <Route path='/notices' element={<Notices />} />
-          <Route path='/notice/:id' element={<Notice />} />
-          <Route path='/notice/edit/:id' element={<NoticeEdit />} />
-          <Route path='/noticeWrite' element={<NoticeWrite />} />
+          <Route element={<DefaultLayout />}>
+            <Route path='/' element={<Home />} />
+            <Route path='/admin' element={<SignIn loginType="admin" />} />
+            <Route path="/signIn" element={<SignIn loginType="user" />} />
+            <Route path='/signUp' element={<SignUp />} />
+            <Route path='/notices' element={<Notices />} />
+            <Route path='/notice/:id' element={<Notice />} />
+            <Route path='/notice/edit/:id' element={<NoticeEdit />} />
+            <Route path='/noticeWrite' element={<NoticeWrite />} />
+            <Route path='/market' />
+            <Route path='/about' />
+          </Route>
+          <Route path='/admin/dashboard' element={<AdminLayout />}>
+          </Route>
         </Routes>
       </BrowserRouter>
-      <hr />
-      <Footer />
     </div>
   )
 }
