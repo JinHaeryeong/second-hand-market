@@ -108,6 +108,7 @@ const NoticeEdit = () => {
         e.preventDefault();
         if (!authUser || authUser.role !== "ROLE_ADMIN") {
             alert("작성 권한이 없습니다.");
+            navigate(`/notice/${id}`);
             return;
         }
         const finalContent = ckeditorInstance.current ? ckeditorInstance.current.getData() : notice.content;
@@ -156,7 +157,7 @@ const NoticeEdit = () => {
     }
 
     if (!authUser || authUser.role !== "ROLE_ADMIN") {
-        navigate("/notices");
+        navigate(`/notice/${id}`);
         return null;
     }
 

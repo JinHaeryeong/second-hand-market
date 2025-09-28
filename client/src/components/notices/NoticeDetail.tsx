@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { usePostStore } from "../../stores/postStore";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAuthStore } from "../../stores/authStore";
+import { Link } from "react-router-dom";
 import Modal from "../modal";
 
 const NoticeDetail = () => {
@@ -108,8 +109,9 @@ const NoticeDetail = () => {
                 </Modal>
             )}
             <hr />
-            <div>다음글</div>
-            <div>이전글</div>
+
+            {post.nextNotice && (<div><Link to={`/notice/${post.nextNotice.id}`}><span className="notice-nav-label">다음글</span> {post.nextNotice.title}</Link></div>)}
+            {post.prevNotice && (<div><Link to={`/notice/${post.prevNotice.id}`}><span className="notice-nav-label">이전글</span> {post.prevNotice.title}</Link></div>)}
         </div>
 
     );

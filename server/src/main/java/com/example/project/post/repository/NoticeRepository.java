@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface NoticeRepository extends JpaRepository<Notices, Long> {
     @Query("select n  from Notices n where  n.title like  concat('%',:keyword,'%')")
@@ -17,6 +18,12 @@ public interface NoticeRepository extends JpaRepository<Notices, Long> {
     @Query(value = "select * from Notices where content like concat('%', :keyword,'%') limit :limit",
             nativeQuery = true)
     List<Notices> searchPostsLimit(@Param("keyword") String keyword, @Param("limit") int limit);
+
+    @Query(value = "select n from Notices n where n.id < :currentId order by n.id desc limit 1")
+    Optional<Notices> findPrevNotice(@Param("currentId") Long currentId);
+
+    @Query(value = "select n from Notices  n where n.id > :currentId order by  n.id asc limit 1")
+    Optional<Notices> findNextNotice(@Param("currentId") Long currentId);
 
     Page<Notices> findByTitleContainingIgnoreCase(String keyword, Pageable pageable);
 
