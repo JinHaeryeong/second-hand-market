@@ -1,4 +1,15 @@
 .member-container {
-    width: 90%;
     margin: 0 auto;
+}
+.member-header {
+    display: flex;
+    list-style: none;
+}
+.member-profile {
+    border-radius: 50%;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+.member-list {
+    display: flex;
+    list-style: none;
 }

@@ -1,9 +1,10 @@
 import { useRef, useState } from "react";
 import '../../assets/styles/sign.css';
 import axios from "axios";
-import { apiSignIn, apiAdminSignIn } from "../../api/userApi";
+import { apiSignIn } from "../../api/userApi";
 import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "../../stores/authStore";
+import { apiAdminSignIn } from "../../api/adminApi";
 const SignIn = ({ loginType }: { loginType: string }) => {
     const [user, setUser] = useState({
         id: "", pwd: ""

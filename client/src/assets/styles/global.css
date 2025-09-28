@@ -3,6 +3,12 @@
     width: 100%;
     box-sizing: border-box;
 }
+.default-layout-container {
+    padding: 5px;
+}
+.admin-layout-container {
+    display: flex;
+}
 .nav-hr {
     background: rgb(183, 183, 183);
     height: 1px;
