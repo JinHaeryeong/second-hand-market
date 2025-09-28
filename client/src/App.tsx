@@ -12,6 +12,7 @@ import AdminLayout from './layout/AdminLayout';
 import MemberList from './components/admin/MemberList';
 import DashBoard from './components/admin/DashBoard';
 import ItemList from './components/admin/ItemList';
+import Market from './pages/Market';
 
 function App() {
   // const signInAuthUser = useAuthStore((s) => s.signInAuthUser);
@@ -58,7 +59,7 @@ function App() {
             <Route path='/notice/:id' element={<Notice />} />
             <Route path='/notice/edit/:id' element={<NoticeEdit />} />
             <Route path='/noticeWrite' element={<NoticeWrite />} />
-            <Route path='/market' />
+            <Route path='/market' element={<Market />} />
             <Route path='/about' />
           </Route>
           <Route path='/admin-page' element={<AdminLayout />}>
