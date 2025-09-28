@@ -1,5 +1,6 @@
 package com.example.project.post.service;
 
+import com.example.project.post.domain.NoticeDetailResponse;
 import com.example.project.post.domain.NoticeEditRequest;
 import com.example.project.post.domain.NoticeWriteRequest;
 import com.example.project.post.domain.NoticesListRequest;
@@ -25,6 +26,7 @@ import java.io.File;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -185,23 +187,51 @@ public class NoticeService {
             return ApiResponse.success("공지사항 목록 조회 성공", noticesPage);
     }
 
-    public ApiResponse<NoticesListRequest> getPostById(Integer id) {
+    public ApiResponse<NoticeDetailResponse> getPostById(Integer id) {
         /*
         *         Post entity= postRepsoitory.findById(id)
                 .orElseThrow(()->new RuntimeException("Post not found"));
         *
         * */
+        long postId = id.longValue();
 
-        Notices entity = noticeRepository.findById(id.longValue())
-                .orElseThrow(() -> new RuntimeException("글을 찾지 못했어요. ID: " + id));
+        Notices entity = noticeRepository.findById(postId)
+                .orElseThrow(() -> new RuntimeException("글을 찾지 못했어요. ID: " + postId));
 
         entity.setViews(entity.getViews() + 1);
+
+        Notices prevEntityOpt = noticeRepository.findPrevNotice(postId).orElse(null);
+        Notices nextEntityOpt = noticeRepository.findNextNotice(postId).orElse(null);
         // ⭐️ DTO로 변환하여 반환합니다.
-        NoticesListRequest noticeDto = NoticesListRequest.fromEntity(entity);
+        Notices prevEntity = noticeRepository.findPrevNotice(postId).orElse(null);
+        Notices nextEntity = noticeRepository.findNextNotice(postId).orElse(null);
 
-        noticeDto.setContent(entity.getContent());
+        // 3. 빌더 패턴으로 DTO 생성 및 필드 채우기 (데이터 조합)
+        NoticeDetailResponse response = NoticeDetailResponse.builder()
+                // ⭐️ DTO의 fromEntity 역할을 대체
+                .id(entity.getId())
+                .userId(entity.getUserId())
+                .title(entity.getTitle())
+                .content(entity.getContent())
+                .createdAt(entity.getCreatedAt())
+                .updatedAt(entity.getUpdatedAt())
+                .views(entity.getViews())
 
-        return ApiResponse.success("글 가져옴", noticeDto);
+                // ⭐️ 이전 글 정보 SimpleNotice로 맵핑
+                .prevNotice(prevEntity != null ? NoticeDetailResponse.SimpleNotice.builder()
+                        .id(prevEntity.getId())
+                        .title(prevEntity.getTitle())
+                        .build() : null)
+
+                // ⭐️ 다음 글 정보 SimpleNotice로 맵핑
+                .nextNotice(nextEntity != null ? NoticeDetailResponse.SimpleNotice.builder()
+                        .id(nextEntity.getId())
+                        .title(nextEntity.getTitle())
+                        .build() : null)
+
+                .build();
+
+        return ApiResponse.success("글 가져옴", response);
     }
 
     public ApiResponse<?> deletePostById(Integer id) {

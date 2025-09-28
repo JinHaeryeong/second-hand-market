@@ -29,15 +29,42 @@ const NoticeList = () => {
     console.log(startPage);
     console.log(endPage);
 
+    const isToday = (dateString: string) => {
+        const today = new Date();
+
+        const postDate = new Date(dateString);
+
+        if (isNaN(postDate.getTime())) {
+            return false;
+        }
+
+        return (
+            today.getFullYear() === postDate.getFullYear() &&
+            today.getMonth() === postDate.getMonth() &&
+            today.getDate() === postDate.getDate()
+        );
+    };
 
     return (
         <div className="notices-container">
             <h1>공지사항</h1>
             <ul className="notice-list">
+                <li className="notice-item notice-header">
+                    <div>제목</div>
+                    <div className="notice-header-meta">
+                        <div>작성일</div>
+                        <div className="item-views">조회수</div>
+                    </div>
+                </li>
+            </ul>
+            <ul className="notice-list">
                 {postList.map((post: any) => (
                     <Link key={post.id} to={`/notice/${post.id}`}>
                         <li className="notice-item">
-                            <div className="item-title">{post.title}</div>
+                            <div className="item-title">{post.title} {isToday(post.createdAt) && (
+                                <img src="/images/new.png" alt="new" className="new-icon" />
+                            )}</div>
+
                             <div className="item-meta">
                                 <span className="item-date">
                                     {new Intl.DateTimeFormat('ko-KR', {

@@ -21,6 +21,8 @@ const NoticeWrite = () => {
         }
     }, [authUser]);
     if (!authUser || authUser.role !== "ROLE_ADMIN") {
+        alert("접근 권한이 없습니다.");
+        navigate("/notices");
         return null;
     }
     useEffect(() => {

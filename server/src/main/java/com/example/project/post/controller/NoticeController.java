@@ -1,5 +1,6 @@
 package com.example.project.post.controller;
 
+import com.example.project.post.domain.NoticeDetailResponse;
 import com.example.project.post.domain.NoticeEditRequest;
 import com.example.project.post.domain.NoticeWriteRequest;
 import com.example.project.post.domain.NoticesListRequest;
@@ -55,7 +56,7 @@ public class NoticeController {
     public ResponseEntity<?> getPostById(@PathVariable Integer id){
         log.info("id==={}",id);
 
-        ApiResponse<NoticesListRequest> response = noticeService.getPostById(id);
+        ApiResponse<NoticeDetailResponse> response = noticeService.getPostById(id);
         return ResponseEntity.ok(response);
     }
 
