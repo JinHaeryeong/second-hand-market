@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { useAuthStore } from "../../stores/authStore";
 import { useNavigate, useParams } from "react-router-dom";
-import { apiNoticeWrite } from "../../api/noticeApi";
 import axios from "axios";
 import { usePostStore } from "../../stores/postStore";
 
 declare const CKEDITOR: any;
+
 const NoticeEdit = () => {
     const { id } = useParams();
     const post = usePostStore((s) => s.post);
@@ -20,35 +20,23 @@ const NoticeEdit = () => {
     const postId = id ? Number(id) : null;
 
     useEffect(() => {
-        const fetchAndSet = async () => {
-            if (postId) {
-                await fetchPostById(postId);
-            }
-        };
-        fetchAndSet(); //함수 호출
-    }, [id, postId, fetchPostById]);
-
-    useEffect(() => {
-        if (post) {
-            setNotice(prev => ({ ...prev, title: post.title, content: post.content }));
+        if (postId) {
+            fetchPostById(postId);
         }
-    }, [post]);
+    }, [postId, fetchPostById]);
 
     useEffect(() => {
         if (!authUser || authUser.role !== "ROLE_ADMIN") {
-            // 같은 관리자여도 아이디가 다르면 삭제못하게 해야하나? 굳이? 음
             alert("접근 권한이 없습니다.")
             navigate("/notices");
         }
-    }, [authUser]);
+    }, [authUser, navigate]);
 
     useEffect(() => {
-        const postLoaded = post && post.content; // post 데이터가 완전히 로드되었는지 확인
-
-        if (typeof CKEDITOR !== 'undefined' && editorRef.current && postLoaded) {
+        if (typeof CKEDITOR !== 'undefined' && editorRef.current && postId) {
             const instanceName = editorRef.current.name;
 
-            // 이미 인스턴스가 있으면 파괴
+            // Strict Mode 대비: 이미 인스턴스가 있으면 파괴
             if (CKEDITOR.instances[instanceName]) {
                 CKEDITOR.instances[instanceName].destroy(true);
             }
@@ -59,14 +47,10 @@ const NoticeEdit = () => {
 
             ckeditorInstance.current = editorInstance;
 
+            // 이벤트 핸들러 바인딩
             editorInstance.on('change', () => {
                 const data = editorInstance.getData();
-
-                // React State 업데이트
-                setNotice(prevNotice => ({
-                    ...prevNotice,
-                    content: data
-                }));
+                setNotice(prevNotice => ({ ...prevNotice, content: data }));
             });
 
             return () => {
@@ -76,6 +60,16 @@ const NoticeEdit = () => {
                 }
             };
         }
+    }, [postId]); // postId가 변경될 때 (마운트 시) CKEditor 생성
+
+    useEffect(() => {
+        if (post) {
+            setNotice(prev => ({ ...prev, title: post.title, content: post.content }));
+
+            if (ckeditorInstance.current) {
+                ckeditorInstance.current.setData(post.content);
+            }
+        }
     }, [post]);
 
     const handleChange = (e: any) => {
@@ -84,9 +78,6 @@ const NoticeEdit = () => {
 
     const check = (finalContent: string) => {
         const { title } = notice;
-
-        console.log("타이틀 : " + title + ", 본문: " + finalContent);
-
         if (!title.trim()) {
             alert("제목을 작성해주세요!");
             titleRef.current?.focus();
@@ -100,9 +91,7 @@ const NoticeEdit = () => {
         return true;
     }
 
-    const resetForm = async () => {
-        setNotice({ title: "", content: "" });
-    }
+
 
     const requestSubmit = async (e: any) => {
         e.preventDefault();
@@ -111,40 +100,31 @@ const NoticeEdit = () => {
             navigate(`/notice/${id}`);
             return;
         }
+
         const finalContent = ckeditorInstance.current ? ckeditorInstance.current.getData() : notice.content;
-        const b = check(finalContent);
-        if (!b) {
+
+        if (!check(finalContent)) {
             return;
         }
-        const noticeData = {
-            title: notice.title,
-            content: finalContent
-        };
+
+        const noticeData = { title: notice.title, content: finalContent };
+
         try {
             if (postId) {
                 const response = await updatePost(postId, noticeData);
 
                 if (response) {
-                    alert("공지사항 수정에 성공했습니다.")
+                    alert("공지사항 수정에 성공했습니다.");
                     navigate(`/notice/${id}`);
                 } else {
                     alert("공지사항 수정에 실패했습니다.");
                 }
-                resetForm();
-                navigate(`/notice/${id}`);
             }
         } catch (error) {
             if (axios.isAxiosError(error) && error.response?.data) {
-                const errorCode = error.response.data.errorCode;
-                alert(error.response.data.message);
-            } else {
-                alert("예상치 못한 에러가 발생했습니다");
-                console.log(axios.isAxiosError(error) && error.response?.data?.message);
-
+                alert("목록 가져오기 실패: " + error.message);
             }
-
         }
-
     }
 
     const handleCancel = () => {
@@ -157,7 +137,6 @@ const NoticeEdit = () => {
     }
 
     if (!authUser || authUser.role !== "ROLE_ADMIN") {
-        navigate(`/notice/${id}`);
         return null;
     }
 
@@ -172,14 +151,13 @@ const NoticeEdit = () => {
                 <div className="notice-write-title-input">
                     <input ref={titleRef} type="text" name="title" id="title" value={notice.title} placeholder="제목을 입력하세요" className="title" onChange={handleChange} />
                 </div>
-                <textarea ref={editorRef} name="content" id="content" value={notice.content} className="notice-write-text-area" onChange={handleChange}></textarea>
+                <textarea ref={editorRef} name="content" id="content" className="notice-write-text-area"></textarea>
                 <div className="notice-write-btn-div">
-                    <button className="notice-write-btn">작성 완료</button>
-                    <button type="button" className="notice-write-cancel-btn" onClick={handleCancel}>작성 취소</button>
+                    <button className="notice-write-btn">수정 완료</button>
+                    <button type="button" className="notice-write-cancel-btn" onClick={handleCancel}>취소</button>
                 </div>
             </form>
         </div>
-
     );
 }
 

@@ -13,38 +13,12 @@ import MemberList from './components/admin/MemberList';
 import DashBoard from './components/admin/DashBoard';
 import ItemList from './components/admin/ItemList';
 import Market from './pages/Market';
+import MarketItemWrite from './components/market/MarketItemWrite';
+import MarketItemDetail from './components/market/MarketItemDetail';
+import MarketItemEdit from './components/market/MarketItemEdit';
 
 function App() {
-  // const signInAuthUser = useAuthStore((s) => s.signInAuthUser);
-  // useEffect(() => {
-  //   requestAuthUser();
-  // }, [signInAuthUser]);
 
-  // const requestAuthUser = async () => {
-  //   try {
-  //     const accessToken = sessionStorage.getItem("accessToken");
-  //     // console.log(accessToken);
-
-
-  //     if (accessToken) {
-  //       const response = await axiosAuthInstance.get(`/auth/user`, {
-  //         headers: {
-  //           Authorization: `Bearer ${accessToken}`,
-  //         },
-  //       });
-  //       const authUser = await response.data;
-  //       // alert(JSON.stringify(authUser));
-  //       console.log("App.tsx의 authUser" + authUser.name);
-
-  //       signInAuthUser(authUser); //인증사용자 정보 전역 state에 설정 후 로딩 상태 false
-  //     }
-  //   } catch (error) {
-  //     console.error("accessToken이 유효하지 않음", error);
-  //     alert(error);
-  //     sessionStorage.removeItem("accessToken");
-  //     localStorage.removeItem("refreshToken");
-  //   }
-  // };
   return (
     <div className="container">
       <BrowserRouter>
@@ -60,6 +34,9 @@ function App() {
             <Route path='/notice/edit/:id' element={<NoticeEdit />} />
             <Route path='/noticeWrite' element={<NoticeWrite />} />
             <Route path='/market' element={<Market />} />
+            <Route path='/market/:id' element={<MarketItemDetail />} />
+            <Route path='/market/itemWrite' element={<MarketItemWrite />} />
+            <Route path='/market/edit/:id' element={<MarketItemEdit />} />
             <Route path='/about' />
           </Route>
           <Route path='/admin-page' element={<AdminLayout />}>

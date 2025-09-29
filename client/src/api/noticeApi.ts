@@ -40,5 +40,4 @@ export const apiFetchPostByIdWithSpring = async (id: number) => {
 export const apiUpdatePost = async (id: number, notice: any) => {
     console.log(notice);
     await axiosInstance.put(`/notices/${id}`, notice);
-
 };
