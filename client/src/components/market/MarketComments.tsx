@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { useAuthStore } from "../../stores/authStore";
 import { useItemStore } from "../../stores/marketStore";
-const MarketComments = () => {
-    const [content, setContent] = useState(''); //처음에 comment로 했을 때 오류가 나서 얘가 문제 일줄 알고 이름 content로 바꿈 -> 근데 얘 이름은 문제가 아니었다
+import { apiCommentWirte } from "../../api/marketApi";
+const MarketComments = ({ onCommentSuccess }: { onCommentSuccess: () => void }) => {
     const authUser = useAuthStore((s: any) => s.authUser);
     const item = useItemStore((s: any) => s.item);
-    const inputComment = (e: any) => {
-        setContent(e.target.value);
+    const [comment, setComment] = useState({ price: item.price, txt: "" })
+    const handleChange = (e: any) => {
+        setComment({ ...comment, [e.target.name]: e.target.value });
     }
     const handleComment = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -21,47 +22,38 @@ const MarketComments = () => {
         if (!item) {
             alert('게시글이 없습니다.');
         }
+        const commentData = {
+            price: comment.price,
+            txt: comment.txt,
+            itemId: item.id,
+            nickname: authUser.nickname
+        };
         try {
 
-            // await addComment({
-            //     content,
-            //     userId: authUser.id,
-            //     userName: authUser.nickname
-            // });
-            setContent('');
+            const response = await apiCommentWirte(commentData);
+            const { result, message } = response;
+            if (result === "success") {
+                alert("댓글 작성에 성공했습니다")
+                setComment({ price: item.price, txt: "" });
+                onCommentSuccess();
+                return;
+            } else {
+                alert(message);
+            }
+            setComment({ price: item.price, txt: "" });
         } catch (error) {
             console.log('댓글 작성중 오류발생')
         }
     }
-    /* 
-    
-    <div className="flex w-full items-center space-x-2">
-            <form onSubmit={handleComment} className="flex gap-2 w-full h-32" >
-                <textarea
-                    name="content"
-                    value={content}
-                    onChange={inputComment}
-                    placeholder="댓글을 입력해주세요"
-                    required
-                    className="h-full w-full comment-textarea"
-                    maxLength={200}
-                />
-                <Button type="submit" className="h-full">등록</Button>
-            </form>
-        </div>
-    */
+
+
+
     return (
         <div className="comment-container">
+
             <form onSubmit={handleComment} className="comment-form">
-                <textarea
-                    name="content"
-                    value={content}
-                    onChange={inputComment}
-                    placeholder="댓글을 입력해주세요"
-                    required
-                    className="comment-txt"
-                    maxLength={200}
-                />
+                <input type="number" className="comment-price" id="price" name="price" value={comment.price} onChange={handleChange} />
+                <textarea id="txt" name="txt" className="comment-txt" value={comment.txt} onChange={handleChange} />
                 <button className="comment-submit-btn">등록</button>
             </form>
         </div>);

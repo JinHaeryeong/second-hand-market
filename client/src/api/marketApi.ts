@@ -12,7 +12,6 @@ export const apiSellItemWrite = async (item: any) => {
 // };
 
 export const apiFetchItemList = async (page = 1, size = 15, keyword = "") => {
-    console.log('page=====', page);
     //alert(page);
     const response = await axiosInstance.get(`/market/list`, { params: { page, size, keyword } });
     // `/posts?page=${page}&size=${size}&query=${query}`
@@ -30,7 +29,28 @@ export const apiFetchItemByIdWithSpring = async (id: number) => {
 };
 //---notice글 수정하기 -----------------------------------
 export const apiUpdateItem = async (id: number, item: any) => {
-    console.log(item);
     await axiosAuthInstance.put(`/market/${id}`, item);
     return
 };
+
+// ----
+export const apiCommentWirte = async (comment: any) => {
+    const response = await axiosAuthInstance.post("/market/comment/write", comment);
+    return response.data;
+}
+
+export const apiCommentList = async (id: string) => {
+    const response = await axiosInstance.get(`/market/comment/${id}`);
+    return response.data;
+}
+
+export const apiCommentDelete = async (id: number) => {
+    const response = await axiosAuthInstance.delete(`/market/comment/${id}`);
+    return response.data;
+}
+
+export const apiCommentAccept = async (id: number) => {
+    const response = await axiosAuthInstance.put(`/market/accept/${id}`);
+    return response.data;
+
+}

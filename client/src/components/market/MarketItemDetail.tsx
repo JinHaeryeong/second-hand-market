@@ -4,6 +4,7 @@ import { useAuthStore } from "../../stores/authStore";
 import { useItemStore } from "../../stores/marketStore";
 import Modal from "../modal";
 import MarketComments from "./MarketComments";
+import MarketCommentList from "./MarketCommentList";
 
 const MarketItemDetail = () => {
     const { id } = useParams();
@@ -18,6 +19,7 @@ const MarketItemDetail = () => {
     const itemId = id ? Number(id) : null;
 
     const [isOpenMdoal, setIsModalOpen] = useState(false);
+    const [refreshTrigger, setRefreshTrigger] = useState(0);
 
     useEffect(() => {
         if (itemId && !isNaN(itemId)) {
@@ -75,6 +77,10 @@ const MarketItemDetail = () => {
     };
 
 
+    const triggerRefresh = () => {
+        setRefreshTrigger(prev => prev + 1);
+    };
+
 
 
     return (
@@ -122,8 +128,12 @@ const MarketItemDetail = () => {
             )}
             <hr />
             <div>
-                <MarketComments />
+                <MarketCommentList refreshTrigger={refreshTrigger} />
             </div>
+            <div>
+                <MarketComments onCommentSuccess={triggerRefresh} />
+            </div>
+            {item.status === "판매완료" && (<div>판매가 완료된 상품입니다</div>)}
             {/* {item.nextNotice && (<div><Link to={`/notice/${post.nextNotice.id}`}><span className="notice-nav-label">다음글</span> {post.nextNotice.title}</Link></div>)}
             {post.prevNotice && (<div><Link to={`/notice/${post.prevNotice.id}`}><span className="notice-nav-label">이전글</span> {post.prevNotice.title}</Link></div>)} */}
         </div>

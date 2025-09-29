@@ -80,6 +80,7 @@ public class WebSecurityAndJwtConfig {
                                 .requestMatchers("/api/auth/user").authenticated()
                                 .requestMatchers("/api/auth/signout").authenticated()
                                 .requestMatchers("/api/market/write").authenticated()
+                                .requestMatchers(HttpMethod.POST, "/api/market/comment/write").authenticated()
                                 .requestMatchers(HttpMethod.DELETE,"/api/market/**").authenticated()
                                 .requestMatchers(HttpMethod.PUT, "/api/market/**").authenticated()
                                 .requestMatchers(HttpMethod.POST, "/api/notices/write").hasRole("ADMIN")

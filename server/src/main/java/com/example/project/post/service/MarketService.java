@@ -1,8 +1,10 @@
 package com.example.project.post.service;
 
 import com.example.project.post.domain.*;
+import com.example.project.post.entity.Comments;
 import com.example.project.post.entity.Items;
 import com.example.project.post.entity.Notices;
+import com.example.project.post.repository.CommentsRepository;
 import com.example.project.post.repository.ItemsRespository;
 import com.example.project.user.domain.ApiResponse;
 import lombok.RequiredArgsConstructor;
@@ -24,9 +26,11 @@ import java.io.File;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -35,6 +39,7 @@ import java.util.regex.Pattern;
 public class MarketService {
 
     private final ItemsRespository itemsRespository;
+    private final CommentsRepository commentsRepository;
 
     @Value("${file.upload-dir}")
     private String uploadDir; // 사용되지 않는다면 제거 가능
@@ -290,6 +295,65 @@ public class MarketService {
 
         log.info("판매글 수정 완료 ID: {}", id);
         return ApiResponse.success("판매글이 성공적으로 수정되었습니다.");
+    }
+
+    public ApiResponse<?> buyItemWrite(ItemBuyRequest request, String userId) {
+        try {Comments entity = Comments.builder()
+                .userId(userId)
+                .itemId(request.getItemId())
+                .nickname(request.getNickname())
+                .price(request.getPrice())
+                .txt(request.getTxt())
+                .build();
+
+        commentsRepository.save(entity);
+        return ApiResponse.success("comment 작성 성공");
+        }catch (Exception e) {
+            log.error("comment DB 저장 실패! 원인: ", e);
+            throw new RuntimeException("DB 저장 중 알 수 없는 오류 발생", e);
+        }
+    }
+
+    public ApiResponse<?> getCommentList(Integer id) {
+        List<Comments> commentList = commentsRepository.findByItemId(id);
+        List<CommentListResponse> dtoList = commentList.stream()
+                .map(CommentListResponse::new)
+                .collect(Collectors.toList());
+
+        return ApiResponse.success("성공", dtoList);
+    }
+
+    public ApiResponse<?> deleteCommentById(Integer id, String userId) {
+        log.info("삭제들어오는지");
+        Comments entity = commentsRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("삭제할 댓글을 찾지 못했습니다. ID: " + id));
+        if (!entity.getUserId().equals(userId)) {
+            log.warn("권한 없는 삭제 시도. Item ID: {}, 소유자: {}, 요청자: {}",
+                    id, entity.getUserId(), userId);
+            throw new RuntimeException("삭제 권한이 없습니다.");
+        }
+
+        commentsRepository.delete(entity);
+        log.info("댓글 삭제 성공");
+
+        return ApiResponse.success("댓글 삭제 성공");
+
+    }
+
+    public ApiResponse<?> acceptDeal(Integer id, String userId) {
+        int affectedRows = itemsRespository.updateStatusToSoldOut(id, userId);
+
+        if (affectedRows > 0) {
+            return ApiResponse.success("거래 수락 완료", null);
+        } else {
+
+            if (!itemsRespository.existsById(id)) {
+                return ApiResponse.error("404", "해당 판매글을 찾을 수 없습니다.");
+            } else {
+                // 게시글은 있지만, 업데이트가 안 됐다는 것은 userId가 다르다는 뜻입니다.
+                return ApiResponse.error("403", "판매글 작성자만 거래를 수락할 수 있습니다.");
+            }
+        }
     }
 
     private class CssAttributeFilteringVisitor implements NodeVisitor {
