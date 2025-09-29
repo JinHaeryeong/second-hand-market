@@ -6,7 +6,10 @@ import com.example.project.post.entity.Notices;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -21,4 +24,13 @@ public interface ItemsRespository extends JpaRepository<Items, Integer> {
     Page<ItemListResponse> findByUserIdContainingIgnoreCase(String keyword, Pageable pageable);
 
     Page<ItemListResponse> findByContentContainingIgnoreCase(String keyword, Pageable pageable);
+
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE Items i SET i.status = '판매완료' WHERE i.id = :itemId AND i.userId = :userId")
+    int updateStatusToSoldOut(
+            @Param("itemId") Integer id,
+            @Param("userId") String userId
+    );
+
 }

@@ -31,6 +31,35 @@ public class MarketController {
                 .status(HttpStatus.CREATED)
                 .body(response);
     }
+    @PostMapping("/comment/write")
+    public ResponseEntity<?> buyItemWrite(@RequestBody ItemBuyRequest request, @AuthenticationPrincipal(expression = "userId") String userId) {
+        log.info(request.getTxt());
+        ApiResponse<?> response = marketService.buyItemWrite(request, userId);
+
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(response);
+    }
+    @GetMapping("/comment/{id}")
+    public ResponseEntity<?> getCommentList(@PathVariable Integer id) {
+        ApiResponse<?> response = marketService.getCommentList(id);
+        return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/accept/{id}")
+    public ResponseEntity<?> acceptDeal(@PathVariable Integer id, @AuthenticationPrincipal(expression = "userId") String userId) {
+        ApiResponse<?> response = marketService.acceptDeal(id, userId);
+        return ResponseEntity.ok(response);
+    }
+
+
+    @DeleteMapping("/comment/{id}")
+    public ResponseEntity<?> deleteCommentById(@PathVariable Integer id, @AuthenticationPrincipal(expression = "userId") String userId) {
+        ApiResponse<?> response = marketService.deleteCommentById(id, userId);
+
+        return ResponseEntity.ok(response);
+    }
 
     @GetMapping("/list")
     public ResponseEntity<?> getItemList(@RequestParam(defaultValue = "1") int page,

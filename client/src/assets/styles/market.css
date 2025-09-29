@@ -110,9 +110,14 @@
 
 .comment-form {
     display: flex;
+    align-items: center;
     height: 50px;
     width: 100%;
     gap: 10px;
+}
+.comment-price {
+    height: 100%;
+    font-size: large;
 }
 .comment-txt {
     height: 100%;
@@ -124,4 +129,60 @@
     color: white;
     border-radius: 10px;
     border: none;
+}
+.comment-box {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+}
+.speech-bubble {
+    padding: 1rem;
+    background: #e8f3f3;
+    width: 100%;
+    border-radius: 0.4em;
+    word-break: break-all;
+}
+.comment-top {
+    display: flex;
+    gap: 5px;
+}
+.comment-delte {
+    text-align: right;
+}
+.comment-delte button {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.comment-price-view {
+    color: white;
+    padding: 2px;
+    background-color: #50b2ca;
+    font-weight: bold;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+.comment-confirm {
+    text-align: right;
+    gap: 3px;
+}
+.comment-confirm button {
+    padding: 10px 20px;
+    font-size: medium;
+    font-weight: bold;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    margin-left: 5px;
+    box-sizing: border-box;
+    cursor: pointer;
+}
+.comment-accept {
+    background-color: #487962;
+}
+.comment-reject {
+    background-color: brown;
 }
