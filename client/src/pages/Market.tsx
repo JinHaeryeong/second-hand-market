@@ -1,8 +1,8 @@
 import MarketItems from "../components/market/MarketItems";
-
+import "../assets/styles/market.css"
 const Market = () => {
     return (
-        <div>
+        <div className="market-container">
             <MarketItems />
         </div>
     );

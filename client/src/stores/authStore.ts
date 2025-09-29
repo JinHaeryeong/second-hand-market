@@ -23,7 +23,10 @@ export const useAuthStore = create<AuthState>()(
 
             signInAuthUser: (user) => set({ authUser: user }),
 
-            signout: () => set({ authUser: null }),
+            signout: () => {
+                set({ authUser: null });
+                window.location.href = "/";
+            },
         })),
         {
             name: "authUser", // 1. sessionStorage에 저장될 키 이름

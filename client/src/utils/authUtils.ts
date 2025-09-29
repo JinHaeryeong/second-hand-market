@@ -23,6 +23,7 @@ export const refreshAccessToken = async () => {
     if (!refreshToken) {
         console.log("refreshToken 없음");
         useAuthStore.getState().signout();
+        sessionStorage.removeItem("authUser");
         return null;
     }
     // 리프레시 토큰을 보내 새로운 서버에서 검증은 후 새 액세스토큰을 받자

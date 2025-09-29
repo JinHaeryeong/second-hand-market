@@ -71,7 +71,7 @@ const MemberList = () => {
                                 year: 'numeric',
                                 month: '2-digit',
                                 day: '2-digit'
-                            }).format(new Date(member.createdAt))}</li>
+                            }).format(new Date(member.createdAt)).slice(0, -1)}</li>
                             <li>{member.role}</li>
                         </ul>
 

@@ -1,0 +1,127 @@
+.market-container,
+.market-write-container {
+    width: 90%;
+    margin: 0 auto;
+}
+.page-container {
+    margin-top: 10px;
+}
+.item-write-btn-div {
+    margin-top: 10px;
+    text-align: right;
+}
+.item-write-btn {
+    padding: 10px;
+    width: 100px;
+    color: white;
+    font-size: large;
+    background-color: rgb(44, 83, 78);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.item-write-btn:hover {
+    background-color: rgb(72, 125, 117);
+}
+.item-write-input input,
+.item-write-input select {
+    width: 100%;
+    box-sizing: border-box;
+    margin: 10px 0px;
+    padding: 5px;
+    height: 40px;
+    border-radius: 5px;
+    border-style: solid;
+    border-color: rgb(187, 187, 187);
+    border-width: 1px;
+    outline: none;
+}
+
+.item-container {
+    display: grid;
+
+    grid-template-columns: repeat(5, 1fr);
+
+    gap: 10px;
+}
+.item-link {
+    box-sizing: border-box;
+    padding: 5px;
+    border: solid 1px rgb(203, 203, 203);
+}
+.item-link:hover {
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+}
+.item-thumbnail {
+    text-align: center;
+    width: 100%;
+    height: 150px;
+    position: relative;
+}
+.item-thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.item-status {
+    font-size: 0.75rem;
+    font-weight: bold;
+    color: white;
+
+    height: auto;
+    padding: 3px 8px;
+
+    position: absolute;
+    right: 5px;
+    bottom: 5px;
+
+    border-radius: 4px;
+    z-index: 10;
+}
+
+.status-판매중 {
+    background-color: #f44336; /* 빨간색 계열 */
+}
+
+.status-예약중 {
+    background-color: #ff9800;
+}
+
+.status-판매완료 {
+    background-color: #487962;
+}
+.item-bottom {
+    height: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.item-bottom-div {
+    display: flex;
+    justify-content: space-between;
+}
+.item-created-at {
+    font-weight: lighter;
+}
+.market-info {
+    display: flex;
+}
+
+.comment-form {
+    display: flex;
+    height: 50px;
+    width: 100%;
+    gap: 10px;
+}
+.comment-txt {
+    height: 100%;
+    width: 100%;
+}
+.comment-submit-btn {
+    height: 100%;
+    background-color: rgb(44, 83, 78);
+    color: white;
+    border-radius: 10px;
+    border: none;
+}
