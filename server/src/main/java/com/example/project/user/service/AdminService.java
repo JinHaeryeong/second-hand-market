@@ -42,4 +42,19 @@ public class AdminService {
 
         return ApiResponse.success("유저 목록 조회 성공", users);
     }
+
+    public ApiResponse<?> deleteUserById(String id, String currentRole) {
+        Member entity = memberRepository.findByUserId(id)
+                .orElseThrow(() ->new RuntimeException("유저를 찾을 수 없습니다."));
+
+        if(!entity.getUserId().equals(id) && !currentRole.equals("ROLE_ADMIN")) {
+            log.warn("권한 없는 삭제 시도. Item ID: {}, 소유자: {}, 요청자: {}",
+                    id, entity.getUserId(), currentRole);
+            throw new RuntimeException("삭제 권한이 없습니다.");
+        }
+
+        memberRepository.delete(entity);
+
+        return ApiResponse.success("유저 삭제 성공");
+    }
 }

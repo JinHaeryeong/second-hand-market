@@ -2,7 +2,7 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../stores/authStore';
 import { useEffect } from 'react';
 import Side from '../components/Side';
-
+import "../assets/styles/admin.css";
 const AdminLayout = () => {
     const authUser = useAuthStore((s: any) => s.authUser);
     const navigate = useNavigate();
