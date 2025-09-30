@@ -1,0 +1,23 @@
+.footer-top {
+    display: flex;
+    justify-content: space-between;
+}
+.footer-top-list {
+    list-style: none;
+    display: flex;
+}
+.footer-list {
+    list-style: none;
+    display: flex;
+    padding: 0;
+}
+.footer-top-list-item {
+    margin-left: 20px;
+    box-sizing: border-box;
+}
+.footer-list-item {
+    margin-right: 20px;
+}
+.sns-icon {
+    filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(93deg) brightness(103%) contrast(103%);
+}

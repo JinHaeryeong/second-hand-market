@@ -11,19 +11,23 @@
   transform: translate(1em, 12rem); */
 }
 .admin-logo {
-    padding: 15px;
+    padding: 20px;
+}
+.admin-logo img {
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 .side-navigation-panel
     .side-navigation-panel-select
     .side-navigation-panel-select-wrap
     .side-navigation-panel-select-option:hover {
-    border-color: #3c7476;
+    border-color: #763c3c;
     border-left-width: 3px;
 }
 .side-navigation-panel
     .side-navigation-panel-select
     .side-navigation-panel-select-wrap
     .side-navigation-panel-select-option-selected {
-    border-color: #3c7476;
+    border-color: #763c3c;
     border-left-width: 3px;
 }

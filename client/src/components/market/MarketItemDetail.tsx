@@ -5,6 +5,7 @@ import { useItemStore } from "../../stores/marketStore";
 import Modal from "../modal";
 import MarketComments from "./MarketComments";
 import MarketCommentList from "./MarketCommentList";
+import Avatar from "react-avatar";
 
 const MarketItemDetail = () => {
     const { id } = useParams();
@@ -90,7 +91,7 @@ const MarketItemDetail = () => {
                     {item.title}
                 </div>
                 <div className="market-info">
-                    <div className="market-info-item">작성자 {item.userId}</div>
+                    <div className="market-info-item">작성자 <Avatar name={`${item.userId}`} size="20" round={true} /> {item.userId}</div>
                     <div className="market-info-item">조회수 {item.views}</div>
                     <div className="market-info-item">
                         작성일시 {new Intl.DateTimeFormat('ko-KR', {

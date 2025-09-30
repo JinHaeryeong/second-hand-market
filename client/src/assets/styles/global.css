@@ -4,7 +4,13 @@
     box-sizing: border-box;
 }
 .default-layout-container {
-    padding: 5px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+.main-content-wrapper {
+    flex-grow: 1;
+    align-content: center;
 }
 .admin-layout-container {
     display: flex;
@@ -16,11 +22,18 @@
 }
 
 footer {
+    margin-top: 20px;
     width: 100%;
+    padding: 20px;
+    background-color: rgb(62, 55, 55);
+    color: white;
+    box-sizing: border-box;
+    flex-shrink: 0;
 }
 header {
     width: 100%;
     display: flex;
+    padding: 10px;
     justify-content: space-between;
     box-sizing: border-box;
 }

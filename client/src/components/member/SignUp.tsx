@@ -129,7 +129,7 @@ const SignUp = () => {
         <div className='signup'>
             <div className='signup-top'>
                 <h1>회원가입</h1>
-                <img src='/images/second-logo.png' alt='로고' width={187} height={49} />
+                <img src='/images/main.png' alt='로고' />
                 <div>중고 거래를 손쉽게</div>
             </div>
             <form className='signup-form' onSubmit={handleSubmit}>

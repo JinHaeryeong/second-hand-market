@@ -12,6 +12,12 @@
     font-size: large;
     text-align: center;
 }
+
+.signin-label {
+    display: inline-block;
+    text-align: left;
+    width: 100px;
+}
 .signup-form-item,
 .signin-form-item {
     margin-bottom: 10px;
@@ -40,7 +46,7 @@ select,
     border-radius: 6px;
     box-sizing: border-box;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
-    width: 40%;
+    width: 35%;
 }
 .signup-form-submit-btn,
 .sign-in-form-btn {
@@ -48,7 +54,7 @@ select,
     width: 200px;
     color: white;
     font-size: large;
-    background-color: rgb(44, 83, 78);
+    background-color: #675050;
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -56,6 +62,7 @@ select,
 .sign-form-bottom-list {
     display: flex;
     width: 100%;
+    justify-content: center;
     list-style: none;
 }
 .sign-form-bottom-list-item {

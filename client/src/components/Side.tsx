@@ -9,7 +9,7 @@ const Side = () => {
     return (
         <div className="side">
             <Link to="/" className="admin-logo">
-                <img src='../images/second-logo.png' width={187} />
+                <img src='/images/logo.png' width={187} />
             </Link>
             <Navigation
                 // you can use your own router's api to get pathname

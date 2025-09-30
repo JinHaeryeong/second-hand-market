@@ -72,17 +72,14 @@ const SignIn = ({ loginType }: { loginType: string }) => {
     return (
         <div className="sign-in-container">
             <h1>로그인</h1>
-            <form onSubmit={handleSubmit}>
+            <img src="/images/main.png" />
+            <form onSubmit={handleSubmit} className="sigin-form">
                 <div className="signin-form-item">
-                    <div>
-                        <label htmlFor="id">아이디</label>
-                    </div>
+                    <label htmlFor="id" className="signin-label">아이디</label>
                     <input placeholder="아이디" type="text" value={user.id} onChange={handleChange} name="id" id="id" ref={idRef} />
                 </div>
                 <div className="signin-form-item">
-                    <div>
-                        <label htmlFor="pwd">비밀번호</label>
-                    </div>
+                    <label htmlFor="pwd" className="signin-label">비밀번호</label>
                     <input placeholder="비밀번호" type="password" value={user.pwd} onChange={handleChange} name="pwd" id="pwd" ref={pwdRef} />
                 </div>
                 <div className="sign-form-bottom">
