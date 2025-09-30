@@ -85,11 +85,13 @@ public class MarketController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteItem(@PathVariable Integer id, @AuthenticationPrincipal(expression = "userId") String currentUserId) {
+    public ResponseEntity<?> deleteItem(@PathVariable Integer id,
+                                        @AuthenticationPrincipal(expression = "userId") String currentUserId,
+                                        @AuthenticationPrincipal(expression = "authorities[0].authority") String currentRole) {
         log.info("id=={}", id);
         log.info("user=={}", currentUserId);
 
-        ApiResponse<?> response = marketService.deleteItemById(id, currentUserId);
+        ApiResponse<?> response = marketService.deleteItemById(id, currentUserId, currentRole);
 
         return  ResponseEntity.ok(response);
     }

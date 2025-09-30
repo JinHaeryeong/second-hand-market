@@ -210,10 +210,10 @@ public class MarketService {
         return ApiResponse.success("글 가져옴", response);
     }
 
-    public ApiResponse<?> deleteItemById(Integer itemId, String currentId) {
+    public ApiResponse<?> deleteItemById(Integer itemId, String currentId, String currentRole) {
         Items entity = itemsRespository.findById(itemId)
                 .orElseThrow(() -> new RuntimeException("삭제할 글을 찾지 못했습니다. ID: " + itemId));
-        if (!entity.getUserId().equals(currentId)) {
+        if (!entity.getUserId().equals(currentId) && !currentRole.equals("ROLE_ADMIN")) {
             log.warn("권한 없는 삭제 시도. Item ID: {}, 소유자: {}, 요청자: {}",
                     itemId, entity.getUserId(), currentId);
             throw new RuntimeException("삭제 권한이 없습니다.");
@@ -320,6 +320,7 @@ public class MarketService {
                 .map(CommentListResponse::new)
                 .collect(Collectors.toList());
 
+        log.info("dtoList의 값==={}", dtoList);
         return ApiResponse.success("성공", dtoList);
     }
 

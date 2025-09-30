@@ -14,6 +14,8 @@ const MarketCommentList = ({ refreshTrigger }: { refreshTrigger: number }) => {
     const navigate = useNavigate();
 
     const fetchComments = async () => {
+        console.log(item.id);
+
         if (!item || !item.id) {
             setComments([]);
             return;
@@ -21,6 +23,8 @@ const MarketCommentList = ({ refreshTrigger }: { refreshTrigger: number }) => {
 
         try {
             const response = await apiCommentList(item.id);
+            console.log("API응답 데이터" + response.data);
+
 
             if (response && response.data) {
                 setComments(response.data);
@@ -90,27 +94,29 @@ const MarketCommentList = ({ refreshTrigger }: { refreshTrigger: number }) => {
                 <p>댓글이 없습니다.</p>
             ) : (
                 <>
-                    {comments.map((comment: any) => (
-                        <div key={comment.id} className="comment-box">
-                            <Avatar githubHandle="sitebase" size="30" round={true} />
-                            <div className="speech-bubble">
-                                <div className="comment-top"><strong>{comment.nickname}</strong><div className="comment-price-view">{comment.price}원</div></div>
-                                <div className="comment-text">{comment.txt}</div>
+                    {
+
+                        comments.map((comment: any) => (
+                            <div key={comment.id} className="comment-box">
+                                <Avatar githubHandle="sitebase" size="30" round={true} />
+                                <div className="speech-bubble">
+                                    <div className="comment-top"><strong>{comment.nickname}</strong><div className="comment-price-view">{comment.price}원</div></div>
+                                    <div className="comment-text">{comment.txt}</div>
 
 
-                                {comment.userId === authUser.id &&
-                                    <div className="comment-delte">
-                                        <button onClick={() => openDeleteInModal(comment.id)}>삭제</button>
-                                    </div>}
-                                {item.userId == authUser.id && (
-                                    <div className="comment-confirm">
-                                        <button className="comment-accept" onClick={handleAccept}>수락</button><button className="comment-reject">거절</button>
-                                    </div>
-                                )}
+                                    {authUser && comment.userId === authUser.id &&
+                                        <div className="comment-delte">
+                                            <button onClick={() => openDeleteInModal(comment.id)}>삭제</button>
+                                        </div>}
+                                    {authUser && item.userId == authUser.id && (
+                                        <div className="comment-confirm">
+                                            <button className="comment-accept" onClick={handleAccept}>수락</button><button className="comment-reject">거절</button>
+                                        </div>
+                                    )}
+                                </div>
+
                             </div>
-
-                        </div>
-                    ))}
+                        ))}
                 </>
             )}
             {isOpenMdoal && (

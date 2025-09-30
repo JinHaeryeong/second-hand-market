@@ -1,15 +1,26 @@
 .member-container {
     margin: 0 auto;
 }
-.member-header {
-    display: flex;
-    list-style: none;
-}
-.member-profile {
-    border-radius: 50%;
-    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-}
+
+.member-header,
 .member-list {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    padding: 0;
+    padding: 10px;
     list-style: none;
+}
+
+.member-list:hover {
+    background-color: aliceblue;
+}
+.member-img {
+    text-align: center;
+}
+.member-profile img {
+    border-radius: 50%;
+    text-align: center;
+    border: 1px solid black;
+    width: 50px;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }

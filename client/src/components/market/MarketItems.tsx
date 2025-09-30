@@ -2,6 +2,8 @@ import { Link } from "react-router-dom";
 import { useItemStore } from "../../stores/marketStore";
 import { useEffect } from "react";
 import { ChevronsLeft, ChevronsRight } from "lucide-react";
+import { formatDistanceToNow } from 'date-fns';
+import { ko } from 'date-fns/locale';
 
 const MarketItems = () => {
     const itemList = useItemStore((s: any) => s.itemList);
@@ -33,6 +35,14 @@ const MarketItems = () => {
         return new Intl.NumberFormat('ko-KR').format(price);
     };
 
+    const getRelativeTime = (dateString: string) => {
+        if (!dateString) return '';
+
+        return formatDistanceToNow(new Date(dateString), {
+            addSuffix: true, // "전" 접미사를 추가합니다. (예: 5분 -> 5분 전)
+            locale: ko
+        });
+    }
     return (
         <div>
             <h1>아이템... 아 귀찮아</h1>
@@ -57,12 +67,9 @@ const MarketItems = () => {
                             <div>{item.title}</div>
                             <div className="item-bottom-div">
                                 <div><strong>{formatPrice(item.price)}</strong>원</div>
-                                <div className="item-created-at">{
-                                    new Intl.DateTimeFormat('ko-KR', {
-                                        year: 'numeric',
-                                        month: '2-digit',
-                                        day: '2-digit'
-                                    }).format(new Date(item.createdAt)).slice(0, -1)}</div>
+                                <div className="item-created-at">
+                                    {getRelativeTime(item.createdAt)}
+                                </div>
                             </div>
                         </div>
                     </Link>

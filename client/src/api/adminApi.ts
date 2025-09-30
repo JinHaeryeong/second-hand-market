@@ -10,3 +10,8 @@ export const apiFetchUsers = async (page = 1, size = 5, keyword = "") => {
     const response = await axiosAuthInstance.get(`/admin/users`, { params: { page, size, keyword } });
     return response.data;
 };
+
+export const apiUserDelete = async (id: string) => {
+    const response = await axiosAuthInstance.delete(`/admin/user/${id}`);
+    return response.data;
+}
