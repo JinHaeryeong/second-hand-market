@@ -45,7 +45,7 @@ const MarketItems = () => {
     }
     return (
         <div>
-            <h1>아이템... 아 귀찮아</h1>
+            <div className="market-title">장터 <img src="./images/market.png" width={40} /></div>
             <div className="item-container">
                 {itemList && itemList.map((item: any, index: number) => (
                     <Link to={`/market/${item.id}`} key={index} className="item-link">

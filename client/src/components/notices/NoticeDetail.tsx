@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useAuthStore } from "../../stores/authStore";
 import { Link } from "react-router-dom";
 import Modal from "../modal";
+import Avatar from "react-avatar";
 
 const NoticeDetail = () => {
     const { id } = useParams();
@@ -74,7 +75,7 @@ const NoticeDetail = () => {
                     {post.title}
                 </div>
                 <div className="notice-info">
-                    <div className="notice-info-item">작성자 {post.userId}</div>
+                    <div className="notice-info-item">작성자 <Avatar name={`${post.userId}`} size="20" round={true} /> {post.userId}</div>
                     <div className="notice-info-item">조회수 {post.views}</div>
                     <div className="notice-info-item">
                         작성일시 {new Intl.DateTimeFormat('ko-KR', {
@@ -110,7 +111,7 @@ const NoticeDetail = () => {
             )}
             <hr />
 
-            {post.nextNotice && (<div><Link to={`/notice/${post.nextNotice.id}`}><span className="notice-nav-label">다음글</span> {post.nextNotice.title}</Link></div>)}
+            {post.nextNotice && (<div className="next-notice"><Link to={`/notice/${post.nextNotice.id}`}><span className="notice-nav-label">다음글</span> {post.nextNotice.title}</Link></div>)}
             {post.prevNotice && (<div><Link to={`/notice/${post.prevNotice.id}`}><span className="notice-nav-label">이전글</span> {post.prevNotice.title}</Link></div>)}
         </div>
 

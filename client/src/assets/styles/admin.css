@@ -54,7 +54,7 @@
     border: none;
     font-weight: bold;
     border-radius: 5px;
-    background-color: rgb(44, 83, 78);
+    background-color: rgb(101, 77, 77);
     cursor: pointer;
 }
 .admin-li-item {
@@ -275,9 +275,9 @@
 }
 
 .primary-btn {
-    background-color: rgba(36, 120, 113, 0.9);
+    background-color: rgb(96, 72, 72);
 }
 
 .primary-btn:hover {
-    background-color: rgba(36, 120, 113, 0.9); /* hover:bg-primary/90 */
+    background-color: rgb(138, 103, 103); /* hover:bg-primary/90 */
 }

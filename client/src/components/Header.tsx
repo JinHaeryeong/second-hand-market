@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import '../assets/styles/header.css'
 import "@radix-ui/themes/styles.css";
-import { AlertCircle, HatGlasses, LogOut, User2, UserPlus2, UsersRound } from "lucide-react";
+import { AlertCircle, HatGlasses, LogOut, User2, UserPlus2 } from "lucide-react";
 import { useAuthStore } from "../stores/authStore";
 import { apiSignOut } from "../api/userApi";
 import axios from "axios";
@@ -48,7 +48,7 @@ const Header = () => {
         <header>
             <div className="header-left">
                 <Link to="/" className="logo-link">
-                    <img src="/images/second-logo.png" width="187px" height="47px" alt="로고" />
+                    <img src="/images/logo.png" width="187px" height="47px" alt="로고" />
                 </Link>
                 <ul className="nav-list">
 
@@ -65,9 +65,7 @@ const Header = () => {
             </div>
             <div>
                 <ul className="nav-list">
-                    <li className="nav-list-item">
-                        <AlertCircle />
-                    </li>
+
                     {!authUser && (
                         <><Link to="/signin"><li className="nav-list-item"><User2 /></li></Link><Link to="/signup"><li className="nav-list-item"><UserPlus2 /></li></Link></>
                     )}

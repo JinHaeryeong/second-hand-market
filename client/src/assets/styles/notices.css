@@ -3,6 +3,26 @@
     width: 90%;
     margin: 0 auto;
 }
+.notice-container::before {
+    content: "";
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    left: -5px;
+    top: -27px;
+    background-image: url("/images/bookmark.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.notice-container {
+    position: relative;
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+    border: 1px solid rgb(78, 68, 68);
+    padding: 30px;
+    box-sizing: border-box;
+}
 .notice-list {
     list-style: none;
     padding: 0;
@@ -13,7 +33,10 @@
 }
 
 .notice-title {
-    font-size: 3rem;
+    font-size: 2rem;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    font-weight: 600;
 }
 .new-icon {
     width: 24px;
@@ -105,7 +128,7 @@
 .next-btn {
     border: none;
     padding: 10px;
-    color: #5f9ea0;
+    color: rgb(101, 77, 77);
     background-color: transparent;
     cursor: pointer;
 }
@@ -124,7 +147,7 @@
     border-bottom-right-radius: 5px;
 }
 .selected-page {
-    background-color: #5f9ea0;
+    background-color: rgb(101, 77, 77);
     color: white;
 }
 
@@ -152,7 +175,7 @@
     text-align: right;
 }
 .notice-btns .notice-delete {
-    background-color: rgb(17, 45, 41);
+    background-color: rgb(49, 32, 32);
 }
 .notice-btn {
     margin-left: 5px;
@@ -167,14 +190,14 @@
     width: 100px;
     color: white;
     font-size: large;
-    background-color: rgb(44, 83, 78);
+    background-color: rgb(101, 77, 77);
     border: none;
     border-radius: 5px;
     cursor: pointer;
 }
 .delete-confirm-btn {
     margin-right: 5px;
-    background-color: rgb(17, 45, 41);
+    background-color: rgb(62, 42, 42);
 }
 
 .notice-write-cancel-btn {
@@ -186,11 +209,14 @@
 .notice-btn:hover,
 .delete-cancel-btn:hover,
 .delete-confirm-btn:hover {
-    background-color: rgb(72, 125, 117);
+    background-color: rgb(138, 114, 114);
 }
 .delete-confirm {
     text-align: center;
 }
 .notice-nav-label {
     font-weight: 600;
+}
+.next-notice {
+    margin-bottom: 10px;
 }

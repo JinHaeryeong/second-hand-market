@@ -10,14 +10,17 @@
     display: flex;
 }
 .nav-list-left-item {
-    margin-right: 10px;
+    margin-right: 25px;
     font-weight: 600;
     cursor: pointer;
+}
+.nav-list-left-item a {
+    color: rgb(76, 55, 55);
 }
 .underline {
     display: block;
     height: 2px;
-    background-color: rgb(55, 76, 73);
+    background-color: rgb(95, 29, 29);
 
     width: 100%;
 
@@ -31,8 +34,9 @@
 .nav-list-left-item:hover .underline {
     transform: scaleX(1);
 }
-.nav-list-item {
+.nav-list-item > * {
     width: fit-content;
+    color: rgb(93, 43, 43);
     margin-left: 15px;
     cursor: pointer;
 }
