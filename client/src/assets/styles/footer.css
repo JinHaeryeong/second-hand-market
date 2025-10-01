@@ -1,8 +1,4 @@
-.footer-top {
-    display: flex;
-    justify-content: space-between;
-}
-.footer-top-list {
+.footer-bottom-list {
     list-style: none;
     display: flex;
 }
@@ -20,4 +16,10 @@
 }
 .sns-icon {
     filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(93deg) brightness(103%) contrast(103%);
+}
+
+.footer-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }

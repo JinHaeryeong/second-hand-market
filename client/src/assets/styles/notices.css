@@ -48,6 +48,8 @@
 }
 .notice-info {
     display: flex;
+    box-shadow: rgba(33, 35, 38, 0.2) 0px 10px 10px -10px;
+    margin-bottom: 10px;
 }
 .notice-info-item {
     margin-right: 10px;

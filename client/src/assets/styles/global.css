@@ -10,6 +10,7 @@
 }
 .main-content-wrapper {
     flex-grow: 1;
+    position: relative;
     align-content: center;
 }
 .admin-layout-container {
@@ -34,8 +35,11 @@ header {
     width: 100%;
     display: flex;
     padding: 10px;
+    box-sizing: border-box;
+    box-shadow: rgba(33, 35, 38, 0.1) 0px 10px 10px -10px;
     justify-content: space-between;
     box-sizing: border-box;
+    margin-bottom: 20px;
 }
 .modal-overlay {
     position: fixed;
@@ -67,4 +71,7 @@ header {
     margin-bottom: 1rem;
     overflow-y: auto;
     color: #4a4a4a;
+}
+textarea {
+    resize: none;
 }

@@ -9,6 +9,7 @@ import Avatar from "react-avatar";
 import axios from "axios";
 import { apiChatRequest } from "../../api/chatApi";
 import ChatRoomModal from "../ChatRoomModal";
+import { MessageCircle, MessageSquare } from "lucide-react";
 const MarketItemDetail = () => {
     const { id } = useParams();
     const navigate = useNavigate();
@@ -139,23 +140,27 @@ const MarketItemDetail = () => {
                     {item.title}
                 </div>
                 <div className="market-info">
-                    <div className="market-info-item">작성자 <Avatar name={`${item.userId}`} size="20" round={true} /> {item.userId}</div>
-                    <div className="market-info-item"><button className="chat-btn" onClick={() => handleChatButtonClick(item.id)}>채팅</button></div>
-                    <div className="market-info-item">조회수 {item.views}</div>
-                    <div className="market-info-item">
-                        작성일시 {new Intl.DateTimeFormat('ko-KR', {
-                            year: 'numeric',
-                            month: '2-digit',
-                            day: '2-digit',
-                            hour: '2-digit',
-                            minute: '2-digit',
-                            second: '2-digit',
-                            hour12: true
-                        }).format(new Date(item.createdAt))}
+                    <div className="market-info-item market-info-left">
+                        <div><strong>작성자</strong> <Avatar name={`${item.userId}`} size="20" round={true} /> {item.userId}</div>
+                        <div><button className="chat-btn" onClick={() => handleChatButtonClick(item.id)}>채팅하기</button></div>
+                    </div>
+                    <div className="market-info-item market-info-right">
+                        <div>조회수 {item.views}</div>
+                        <div>
+                            작성일시 {new Intl.DateTimeFormat('ko-KR', {
+                                year: 'numeric',
+                                month: '2-digit',
+                                day: '2-digit',
+                                hour: '2-digit',
+                                minute: '2-digit',
+                                second: '2-digit',
+                                hour12: true
+                            }).format(new Date(item.createdAt))}
+                        </div>
                     </div>
                 </div>
                 <div>{item.categoryName}</div>
-                <div>{formatPrice(item.price)}원</div>
+                <div className="market-item-price"><strong>{formatPrice(item.price)}</strong>원</div>
                 <div
                     dangerouslySetInnerHTML={{ __html: item.content }} className="notice-content">
                 </div>

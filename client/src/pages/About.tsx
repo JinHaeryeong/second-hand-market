@@ -10,7 +10,7 @@ const About = () => {
     return (
         <div className="about-container">
             <section className="about-info-container">
-                <h2>우리의 이야기</h2>
+                <h1 className="about-info-title">우리의 이야기</h1>
                 <div>
                     SecondChance Market는 중고 물품에 새로운 생명을 불어넣어 사람들이 쉽게 물건을 사고 팔 수 있는 활기찬 온라인 커뮤니티를 만들고자 하는 단순하지만 강력한 아이디어에서 시작되었습니다. 저희는 지속 가능성, 경제성, 커뮤니티 참여의 가치를 믿습니다.
                 </div>
