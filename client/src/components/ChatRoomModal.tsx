@@ -15,11 +15,10 @@ interface ChatRoomModalProps {
     isOpen: boolean;
     onClose: () => void;
     chatRoomId: number;
-    itemId: number;
 }
 
 
-const ChatRoomModal: React.FC<ChatRoomModalProps> = ({ isOpen, onClose, chatRoomId, itemId }) => {
+const ChatRoomModal: React.FC<ChatRoomModalProps> = ({ isOpen, onClose, chatRoomId }) => {
     const authUser = useAuthStore((s: any) => s.authUser);
     const [messages, setMessages] = useState<ChatMessage[]>([]);
     const stompClientRef = useRef<Stomp.CompatClient | null>(null);
@@ -132,14 +131,14 @@ const ChatRoomModal: React.FC<ChatRoomModalProps> = ({ isOpen, onClose, chatRoom
                 <button className="chat-send-btn" onClick={sendMessage} disabled={!stompConnected || loading}>전송</button>
             </div>
         }>
-            <div className="chat-messages" style={{ height: '300px', overflowY: 'scroll', border: '1px solid #eee', padding: '10px' }}>
+            <div className="chat-messages">
                 {loading ?
                     <div>대화 기록 로딩 중...</div> :
                     !stompConnected && messages.length === 0 ?
                         <div>연결 실패 또는 대화 기록이 없습니다.</div> :
                         messages.map((msg, index) => (
-                            <div key={index} style={{ textAlign: msg.sender === senderId ? 'right' : 'left', margin: '5px 0' }}>
-                                <span style={{ fontWeight: 'bold' }}>{msg.sender === senderId ? '나' : msg.sender}:</span> {msg.message}
+                            <div key={index} className={`chat-message ${msg.sender === senderId ? 'sender' : 'recipient'}`}>
+                                <div style={{ fontWeight: 'bold' }}>{msg.sender === senderId ? '나' : msg.sender}</div> {msg.message}
                                 <div style={{ fontSize: '0.7em', color: '#999' }}>{new Date(msg.createdAt).toLocaleTimeString()}</div>
                             </div>
                         ))

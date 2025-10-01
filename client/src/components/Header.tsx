@@ -1,6 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
 import '../assets/styles/header.css'
-import "@radix-ui/themes/styles.css";
 import { HatGlasses, LogOut, MessageCircle, User2, UserPlus2 } from "lucide-react";
 import { useAuthStore } from "../stores/authStore";
 import { apiSignOut } from "../api/userApi";
@@ -73,7 +72,7 @@ const Header = () => {
                     {authUser && authUser.role === "ROLE_ADMIN" && <li className="nav-list-item"><Link to="/admin-page/dashboard"><HatGlasses /></Link></li>}
                     {authUser && (
                         <>
-                            <li className="nav-list-item"><ChatListPopover /></li>
+                            <ChatListPopover />
                             <li className="nav-list-item"><User2 /></li>
                             <li className="nav-list-item"><LogOut onClick={handleSignOut} /></li>
                         </>
