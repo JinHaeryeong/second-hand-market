@@ -47,7 +47,7 @@ header {
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 60;
+    z-index: 9999;
 }
 .modal {
     background-color: #fff;

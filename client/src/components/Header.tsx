@@ -1,9 +1,9 @@
 import { Link, useNavigate } from "react-router-dom";
 import '../assets/styles/header.css'
-import "@radix-ui/themes/styles.css";
-import { AlertCircle, HatGlasses, LogOut, User2, UserPlus2 } from "lucide-react";
+import { HatGlasses, LogOut, MessageCircle, User2, UserPlus2 } from "lucide-react";
 import { useAuthStore } from "../stores/authStore";
 import { apiSignOut } from "../api/userApi";
+import ChatListPopover from './ChatListPopover';
 import axios from "axios";
 const leftNav = [
     { name: "공지사항", link: "/notices" },
@@ -72,6 +72,7 @@ const Header = () => {
                     {authUser && authUser.role === "ROLE_ADMIN" && <li className="nav-list-item"><Link to="/admin-page/dashboard"><HatGlasses /></Link></li>}
                     {authUser && (
                         <>
+                            <ChatListPopover />
                             <li className="nav-list-item"><User2 /></li>
                             <li className="nav-list-item"><LogOut onClick={handleSignOut} /></li>
                         </>

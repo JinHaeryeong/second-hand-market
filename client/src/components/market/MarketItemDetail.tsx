@@ -6,7 +6,9 @@ import Modal from "../modal";
 import MarketComments from "./MarketComments";
 import MarketCommentList from "./MarketCommentList";
 import Avatar from "react-avatar";
-
+import axios from "axios";
+import { apiChatRequest } from "../../api/chatApi";
+import ChatRoomModal from "../ChatRoomModal";
 const MarketItemDetail = () => {
     const { id } = useParams();
     const navigate = useNavigate();
@@ -21,6 +23,9 @@ const MarketItemDetail = () => {
 
     const [isOpenMdoal, setIsModalOpen] = useState(false);
     const [refreshTrigger, setRefreshTrigger] = useState(0);
+
+    const [isChatModalOpen, setIsChatModalOpen] = useState(false);
+    const [currentChatRoomId, setCurrentChatRoomId] = useState(null);
 
     useEffect(() => {
         if (itemId && !isNaN(itemId)) {
@@ -81,7 +86,50 @@ const MarketItemDetail = () => {
     const triggerRefresh = () => {
         setRefreshTrigger(prev => prev + 1);
     };
+    const handleChatButtonClick = async (itemId: number) => {
 
+        if (!authUser) {
+            alert("채팅을 시작하려면 로그인해야 합니다.");
+            return;
+        }
+
+        if (authUser.id === item.userId) {
+            alert("자신이 작성한 게시글과는 채팅할 수 없습니다.");
+            return;
+        }
+
+        if (!itemId) {
+            alert("상품이 존재하지 않습니다.");
+            return;
+        }
+
+
+        if (!item.userId) {
+            alert("유저 아이디가 존재하지않아요");
+            return;
+        }
+        try {
+            const response = await apiChatRequest(itemId, item.userId);
+
+            const chatRoomId = response;
+
+
+
+            setCurrentChatRoomId(chatRoomId);
+            setIsChatModalOpen(true);
+
+        } catch (error) {
+            if (axios.isAxiosError(error) && error.response?.data) {
+                console.error("채팅방 생성/조회 실패:", error);
+                alert(error.response?.data || "채팅방을 열 수 없습니다.");
+            }
+        }
+    };
+
+    const closeChatModal = () => {
+        setIsChatModalOpen(false);
+        setCurrentChatRoomId(null);
+    };
 
 
     return (
@@ -92,6 +140,7 @@ const MarketItemDetail = () => {
                 </div>
                 <div className="market-info">
                     <div className="market-info-item">작성자 <Avatar name={`${item.userId}`} size="20" round={true} /> {item.userId}</div>
+                    <div className="market-info-item"><button className="chat-btn" onClick={() => handleChatButtonClick(item.id)}>채팅</button></div>
                     <div className="market-info-item">조회수 {item.views}</div>
                     <div className="market-info-item">
                         작성일시 {new Intl.DateTimeFormat('ko-KR', {
@@ -135,8 +184,13 @@ const MarketItemDetail = () => {
                 <MarketComments onCommentSuccess={triggerRefresh} />
             </div>
             {item.status === "판매완료" && (<div>판매가 완료된 상품입니다</div>)}
-            {/* {item.nextNotice && (<div><Link to={`/notice/${post.nextNotice.id}`}><span className="notice-nav-label">다음글</span> {post.nextNotice.title}</Link></div>)}
-            {post.prevNotice && (<div><Link to={`/notice/${post.prevNotice.id}`}><span className="notice-nav-label">이전글</span> {post.prevNotice.title}</Link></div>)} */}
+            {isChatModalOpen && currentChatRoomId !== null && itemId !== null && (
+                <ChatRoomModal
+                    isOpen={isChatModalOpen}
+                    onClose={closeChatModal}
+                    chatRoomId={currentChatRoomId}
+                />
+            )}
         </div>
 
     );

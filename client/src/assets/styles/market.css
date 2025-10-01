@@ -194,3 +194,13 @@
 .comment-reject {
     background-color: brown;
 }
+
+.chat-btn {
+    border: none;
+    background-color: #7b4541;
+    color: white;
+    border-radius: 8px;
+    padding: 5px;
+    margin: 0px 5px;
+    cursor: pointer;
+}

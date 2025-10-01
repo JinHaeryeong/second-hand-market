@@ -18,7 +18,14 @@ const MainMiddle = () => {
         return new Intl.NumberFormat('ko-KR').format(price);
     };
 
+    const getRelativeTime = (dateString: string) => {
+        if (!dateString) return '';
 
+        return formatDistanceToNow(new Date(dateString), {
+            addSuffix: true, // "전" 접미사를 추가합니다. (예: 5분 -> 5분 전)
+            locale: ko
+        });
+    }
     return (
         <div className="main-middle-container">
             <div className="main-middle-title">지금 판매중인 상품들</div>
@@ -41,7 +48,9 @@ const MainMiddle = () => {
                                             {item.status || '판매중'}
                                         </div>
                                     </div>
-
+                                    <div className="flip-front-desc">
+                                        {getRelativeTime(item.createdAt)}
+                                    </div>
                                 </div>
 
 

@@ -1,0 +1,81 @@
+.chat-input-area {
+    height: 40px;
+    display: grid;
+    grid-template-columns: 1fr 20%;
+    box-sizing: border-box;
+}
+
+.chat-send-btn {
+    height: 100%;
+    box-sizing: border-box;
+    border: none;
+    color: white;
+    border-radius: 8px;
+    padding: 5px;
+    background-color: rgb(101, 77, 77);
+}
+.chat-input {
+    border: none;
+    margin-right: 5px;
+    box-sizing: border-box;
+    height: 100%;
+    padding: 5px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(107, 102, 102, 0.2);
+}
+
+.chat-messages {
+    height: 300px;
+    overflow-y: scroll;
+    border: 1px solid #eee;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.chat-message {
+    margin: 5px 0;
+    padding: 5px;
+    border-radius: 10px;
+}
+.chat-list-scroll-area {
+    max-height: 350px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    position: relative;
+    z-index: 5;
+}
+.sender {
+    text-align: right;
+    background-color: rgb(255, 237, 216);
+}
+.recipient {
+    text-align: left;
+    background-color: rgb(209, 225, 235);
+}
+
+.popover-content {
+    max-width: 320px;
+    background-color: white;
+    max-height: 400px; /* 팝오버 전체 크기 제한 */
+    z-index: 10;
+    overflow: hidden; /* 바깥으로 삐져나온 레이어 방지 */
+}
+.popover-div {
+    width: 300px;
+    padding: 10px;
+    background-color: white;
+}
+.popover-title {
+    margin: 0 0 10px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.chat-room-item {
+    padding: 8px;
+    border-bottom: 1px solid #f0f0f0;
+    cursor: pointer;
+}
+
+.popover-arrow {
+    pointer-events: none;
+}

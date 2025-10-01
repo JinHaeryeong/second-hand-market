@@ -76,7 +76,9 @@ public class WebSecurityAndJwtConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers(WHITE_LIST).permitAll()
+                                .requestMatchers("/ws-stomp/**").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/market/**").permitAll()
+                                .requestMatchers("/api/chat/**").authenticated()
                                 .requestMatchers("/api/auth/user").authenticated()
                                 .requestMatchers("/api/auth/signout").authenticated()
                                 .requestMatchers("/api/market/write").authenticated()
