@@ -53,7 +53,7 @@ const MarketComments = ({ onCommentSuccess }: { onCommentSuccess: () => void }) 
 
             <form onSubmit={handleComment} className="comment-form">
                 <input type="number" className="comment-price" id="price" name="price" min={0} value={comment.price} onChange={handleChange} />
-                <textarea id="txt" name="txt" className="comment-txt" value={comment.txt} onChange={handleChange} />
+                <textarea id="txt" name="txt" className="comment-txt" value={comment.txt} onChange={handleChange} placeholder="판매자에게 하고싶은 말이 있으신가요?" />
                 <button className="comment-submit-btn">등록</button>
             </form>
         </div>);

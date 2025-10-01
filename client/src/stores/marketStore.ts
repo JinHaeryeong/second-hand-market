@@ -69,6 +69,7 @@ export const useItemStore = create<ItemStore>()(
         setPage: (page: number) => set({ page: page }),
         setQuery: (q: string) => set({ keyword: q }),
         setSize: (size: number) => set({ size: size }),
+        clearItem: () => set({ item: null }),
         //글목록 가져오기
         resetItemErr: () => set({ itemErr: null }), //에러 메시지 초기화
         fetchItemList: async () => {

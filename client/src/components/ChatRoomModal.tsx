@@ -4,6 +4,7 @@ import * as Stomp from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 import { useAuthStore } from '../stores/authStore';
 import axiosAuthInstance from '../api/axiosAuthInstance';
+import { useLocation } from 'react-router-dom';
 
 interface ChatMessage {
     sender: string;
@@ -28,10 +29,7 @@ const ChatRoomModal: React.FC<ChatRoomModalProps> = ({ isOpen, onClose, chatRoom
 
     const messagesEndRef = useRef<HTMLDivElement>(null);
     const senderId = authUser?.id;
-
-    const scrollToBottom = () => {
-        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-    };
+    const subscriptionRef = useRef<Stomp.StompSubscription | null>(null);
 
     useEffect(() => {
         console.log(`ChatRoom ID: ${chatRoomId}, Sender ID: ${senderId}`);
@@ -55,6 +53,11 @@ const ChatRoomModal: React.FC<ChatRoomModalProps> = ({ isOpen, onClose, chatRoom
         };
 
         const connect = () => {
+            if (stompClientRef.current && stompClientRef.current.connected) {
+                console.log("STOMP 클라이언트가 이미 연결되어 있습니다. 재연결을 건너뜁니다.");
+                return stompClientRef.current; // 기존 클라이언트 반환
+            }
+
             const socketUrl = 'http://localhost:8080/ws-stomp';
 
             const client = Stomp.Stomp.over(() => new SockJS(socketUrl));
@@ -69,10 +72,11 @@ const ChatRoomModal: React.FC<ChatRoomModalProps> = ({ isOpen, onClose, chatRoom
                     setStompConnected(true);
 
                     // 구독: 서버의 /sub/chat/{chatRoomId} 경로 구독
-                    client.subscribe(`/sub/chat/${chatRoomId}`, (message) => {
+                    const subscription = client.subscribe(`/sub/chat/${chatRoomId}`, (message) => {
                         const newMsg = JSON.parse(message.body);
                         setMessages(prev => [...prev, newMsg]);
                     });
+                    subscriptionRef.current = subscription;
                 },
                 (error: any) => {
                     console.error("STOMP Connection Error:", error);
@@ -88,6 +92,11 @@ const ChatRoomModal: React.FC<ChatRoomModalProps> = ({ isOpen, onClose, chatRoom
         const clientInstance = connect();
 
         return () => {
+            if (subscriptionRef.current) {
+                console.log("STOMP Unsubscribing...");
+                subscriptionRef.current.unsubscribe();
+                subscriptionRef.current = null;
+            }
             if (clientInstance && clientInstance.connected) {
                 console.log("STOMP Disconnecting...");
                 clientInstance.disconnect(() => {
@@ -101,6 +110,10 @@ const ChatRoomModal: React.FC<ChatRoomModalProps> = ({ isOpen, onClose, chatRoom
     useEffect(() => {
         scrollToBottom();
     }, [messages]);
+
+    const scrollToBottom = () => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    };
 
     const sendMessage = () => {
         const client = stompClientRef.current;

@@ -199,10 +199,12 @@
 .main-middle-title {
     font-size: 2rem;
     color: #4c4141;
+    position: relative;
     font-weight: 600;
     margin-bottom: 20px;
 }
 .main-middle-title::after {
+    position: absolute;
     content: "추천드리는 상품";
     align-self: center;
     font-size: 15px;

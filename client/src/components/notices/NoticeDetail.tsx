@@ -75,18 +75,20 @@ const NoticeDetail = () => {
                     {post.title}
                 </div>
                 <div className="notice-info">
-                    <div className="notice-info-item">작성자 <Avatar name={`${post.userId}`} size="20" round={true} /> {post.userId}</div>
-                    <div className="notice-info-item">조회수 {post.views}</div>
-                    <div className="notice-info-item">
-                        작성일시 {new Intl.DateTimeFormat('ko-KR', {
-                            year: 'numeric',
-                            month: '2-digit',
-                            day: '2-digit',
-                            hour: '2-digit',
-                            minute: '2-digit',
-                            second: '2-digit',
-                            hour12: true
-                        }).format(new Date(post.createdAt))}
+                    <div className="notice-info-item"><strong>작성자</strong> <Avatar name={`${post.userId}`} size="20" round={true} /> {post.userId}</div>
+                    <div className="notice-info-item notice-info-right">
+                        <div>조회수 {post.views}</div>
+                        <div>
+                            작성일시 {new Intl.DateTimeFormat('ko-KR', {
+                                year: 'numeric',
+                                month: '2-digit',
+                                day: '2-digit',
+                                hour: '2-digit',
+                                minute: '2-digit',
+                                second: '2-digit',
+                                hour12: true
+                            }).format(new Date(post.createdAt))}
+                        </div>
                     </div>
                 </div>
                 <div
