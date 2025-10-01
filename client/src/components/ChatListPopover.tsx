@@ -91,7 +91,9 @@ const ChatListPopover = () => {
                                     >
                                         <strong>{room.partnerId}</strong>
                                         <p style={{ margin: '3px 0 0 0', fontSize: '0.9em', color: '#666' }}>{room.lastMessage}</p>
-
+                                        <span style={{ marginLeft: 'auto', fontSize: '0.8em', color: '#999' }}>
+                                            {new Date(room.lastSentTime).toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' })}
+                                        </span>
                                     </div>
                                 ))}
                             </div>

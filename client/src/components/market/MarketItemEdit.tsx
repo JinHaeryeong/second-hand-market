@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import { useAuthStore } from "../../stores/authStore";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import { apiUpdateItem } from "../../api/marketApi";
 import { useItemStore } from "../../stores/marketStore";
 
 declare const CKEDITOR: any;
@@ -12,11 +11,15 @@ const MarketItemEdit = () => {
     const fetchItemById = useItemStore((s: any) => s.fetchItemById);
     const updateItem = useItemStore((s: any) => s.updateItem);
     const navigate = useNavigate();
-    const authUser = useAuthStore((s: any) => s.authUser); const [sellItem, setSellItem] = useState({ title: "", content: "", category: "", price: "" });
+    const authUser = useAuthStore((s: any) => s.authUser);
+
+    const [sellItem, setSellItem] = useState({ title: "", content: "", category: "", price: "" });
+
     const editorRef = useRef<HTMLTextAreaElement>(null);
     const titleRef = useRef<HTMLInputElement>(null);
     const categoryRef = useRef<HTMLSelectElement>(null);
     const priceRef = useRef<HTMLInputElement>(null);
+    const clearItem = useItemStore((s: any) => s.clearItem);
     const ckeditorInstance = useRef<any>(null);
     const postId = id ? Number(id) : null;
 
@@ -24,16 +27,33 @@ const MarketItemEdit = () => {
         if (postId) {
             fetchItemById(postId);
         }
-        console.log(item);
 
-    }, [postId, fetchItemById]);
+        return () => {
+            clearItem();
+        };
+
+    }, [postId, fetchItemById, clearItem]);
 
 
     useEffect(() => {
-        if (typeof CKEDITOR !== 'undefined' && editorRef.current && postId) {
+        if (item && typeof CKEDITOR !== 'undefined' && editorRef.current) {
+
+            setSellItem(prev => ({
+                ...prev,
+                title: item.title,
+                content: item.content,
+                category: String(item.categoryId),
+                price: String(item.price)
+            }));
+
+            if (!authUser || authUser.id !== item.userId) {
+                alert("수정 권한이 없습니다. 작성자만 수정할 수 있습니다.");
+                navigate(`/market/${id}`);
+                return;
+            }
+
             const instanceName = editorRef.current.name;
 
-            // Strict Mode 대비: 이미 인스턴스가 있으면 파괴
             if (CKEDITOR.instances[instanceName]) {
                 CKEDITOR.instances[instanceName].destroy(true);
             }
@@ -44,41 +64,24 @@ const MarketItemEdit = () => {
 
             ckeditorInstance.current = editorInstance;
 
-            // 이벤트 핸들러 바인딩
+            editorInstance.setData(item.content);
+
             editorInstance.on('change', () => {
                 const data = editorInstance.getData();
                 setSellItem(prevSellItem => ({ ...prevSellItem, content: data }));
             });
 
+
             return () => {
-                if (editorInstance) {
-                    editorInstance.removeAllListeners();
-                    editorInstance.destroy(true);
+                if (ckeditorInstance.current) {
+                    ckeditorInstance.current.removeAllListeners();
+                    ckeditorInstance.current.destroy(true);
+                    ckeditorInstance.current = null;
                 }
             };
         }
-    }, [postId]); // postId가 변경될 때 (마운트 시) CKEditor 생성
+    }, [item, authUser, navigate, id]); // item 데이터에 의존
 
-    useEffect(() => {
-        if (item) {
-            setSellItem(prev => ({
-                ...prev,
-                title: item.title,
-                content: item.content,
-                category: String(item.categoryId),
-                price: String(item.price)
-            }));
-
-            if (ckeditorInstance.current) {
-                ckeditorInstance.current.setData(item.content);
-            }
-
-            if (!authUser || authUser.id !== item.userId) {
-                alert("수정 권한이 없습니다. 작성자만 수정할 수 있습니다.");
-                navigate(`/market/${id}`); // 해당 글 상세 페이지로 리다이렉트
-            }
-        }
-    }, [item]);
 
     const handleChange = (e: any) => {
         setSellItem({ ...sellItem, [e.target.name]: e.target.value });
@@ -87,8 +90,6 @@ const MarketItemEdit = () => {
     const check = (finalContent: string) => {
         const { title, category, price } = sellItem;
 
-        console.log("타이틀 : " + title + ", 본문: " + finalContent);
-
         if (!title.trim()) {
             alert("제목을 작성해주세요!");
             titleRef.current?.focus();
@@ -96,7 +97,7 @@ const MarketItemEdit = () => {
         }
         if (!finalContent.trim()) {
             alert("본문을 작성해주세요!");
-            editorRef.current?.focus();
+            ckeditorInstance.current?.focus(); // CKEditor 포커스로 변경
             return false;
         }
         if (!category.trim()) {
@@ -111,7 +112,6 @@ const MarketItemEdit = () => {
         }
         return true;
     }
-
 
 
     const requestSubmit = async (e: any) => {
@@ -131,8 +131,8 @@ const MarketItemEdit = () => {
         const sellItemData = {
             title: sellItem.title,
             content: finalContent,
-            category: sellItem.category,
-            price: sellItem.price
+            category: Number(sellItem.category),
+            price: Number(sellItem.price)
         };
         try {
             if (postId) {
@@ -147,7 +147,7 @@ const MarketItemEdit = () => {
             }
         } catch (error) {
             if (axios.isAxiosError(error) && error.response?.data) {
-                alert("목록 가져오기 실패: " + error.message);
+                alert("수정 실패: " + error.message);
             }
         }
     }
@@ -168,7 +168,7 @@ const MarketItemEdit = () => {
 
     return (
         <div className="market-container">
-            <h1>판매</h1>
+            <h1>판매글 수정</h1>
             <form onSubmit={requestSubmit}>
                 <div className="item-write-label">
                     <label htmlFor="title">제목</label>
@@ -200,10 +200,10 @@ const MarketItemEdit = () => {
                 <div className="item-write-input">
                     <input ref={priceRef} type="number" name="price" id="price" value={sellItem.price} placeholder="가격을 입력하세요" className="title" onChange={handleChange} />
                 </div>
-                <textarea ref={editorRef} name="content" id="content" className="notice-write-text-area" onChange={handleChange}></textarea>
+                <textarea ref={editorRef} name="content" id="content" className="notice-write-text-area" defaultValue={item.content}></textarea>
                 <div className="notice-write-btn-div">
-                    <button className="notice-write-btn">작성 완료</button>
-                    <button type="button" className="notice-write-cancel-btn" onClick={handleCancel}>작성 취소</button>
+                    <button className="notice-write-btn">수정 완료</button>
+                    <button type="button" className="notice-write-cancel-btn" onClick={handleCancel}>취소</button>
                 </div>
             </form>
         </div>
