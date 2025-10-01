@@ -51,6 +51,7 @@ interface ItemActions {
     deleteItem: (id: number) => Promise<boolean>; // id 타입을 string으로 가정
     fetchItemById: (id: number) => Promise<void>;
     updateItem: (id: number, notice: any) => Promise<boolean>;
+    clearKeyword: () => void;
 }
 
 // ⭐️ PostStore 타입을 PostState와 PostActions를 합친 것으로 정의
@@ -67,7 +68,8 @@ export const useItemStore = create<ItemStore>()(
         itemErr: null, //특정 게시글을 가져오지 못할 경우
 
         setPage: (page: number) => set({ page: page }),
-        setQuery: (q: string) => set({ keyword: q }),
+        setQuery: (q: string) => set({ keyword: q, page: 1 }),
+        clearKeyword: () => set({ keyword: "", page: 1 }),
         setSize: (size: number) => set({ size: size }),
         clearItem: () => set({ item: null }),
         //글목록 가져오기
@@ -75,6 +77,8 @@ export const useItemStore = create<ItemStore>()(
         fetchItemList: async () => {
             //api호출=> 데이터 받아오면 ==> set()
             const { page, size, keyword } = get();
+
+
 
             try {
                 const data = await apiFetchItemList(page, size, keyword);

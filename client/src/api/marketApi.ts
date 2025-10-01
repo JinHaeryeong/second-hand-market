@@ -11,9 +11,9 @@ export const apiSellItemWrite = async (item: any) => {
 //     return response.data;
 // };
 
-export const apiFetchItemList = async (page = 1, size = 15, keyword = "") => {
+export const apiFetchItemList = async (page = 1, size = 15, keyword = "", findType = 0) => {
     //alert(page);
-    const response = await axiosInstance.get(`/market/list`, { params: { page, size, keyword } });
+    const response = await axiosInstance.get(`/market/list`, { params: { page, size, keyword, findType } });
     // `/posts?page=${page}&size=${size}&query=${query}`
     return response.data;
 };

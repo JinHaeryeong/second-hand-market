@@ -67,6 +67,7 @@ public class MarketController {
                                          @RequestParam(defaultValue = "0") int findType,
                                          @RequestParam(defaultValue = "") String keyword) {
         log.info("list 들어옴");
+        log.info(keyword+"키워드");
         Pageable pageable = PageRequest.of(page - 1, size, Sort.by("id").descending());
 
         // Service에서 이미 Page와 ApiResponse로 포장된 객체를 반환
