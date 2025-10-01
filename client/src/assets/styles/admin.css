@@ -48,7 +48,8 @@
     text-overflow: ellipsis;
     text-align: left;
 }
-.admin-item-del-btn {
+.admin-item-del-btn,
+.member-del-btn {
     color: white;
     padding: 10px 20px;
     border: none;

@@ -52,7 +52,7 @@ const MarketComments = ({ onCommentSuccess }: { onCommentSuccess: () => void }) 
         <div className="comment-container">
 
             <form onSubmit={handleComment} className="comment-form">
-                <input type="number" className="comment-price" id="price" name="price" value={comment.price} onChange={handleChange} />
+                <input type="number" className="comment-price" id="price" name="price" min={0} value={comment.price} onChange={handleChange} />
                 <textarea id="txt" name="txt" className="comment-txt" value={comment.txt} onChange={handleChange} />
                 <button className="comment-submit-btn">등록</button>
             </form>

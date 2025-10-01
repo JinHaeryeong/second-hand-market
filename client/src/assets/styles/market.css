@@ -114,8 +114,23 @@
 }
 .market-info {
     display: flex;
+    justify-content: space-between;
+    box-shadow: rgba(33, 35, 38, 0.2) 0px 10px 10px -10px;
+    margin-bottom: 10px;
 }
-
+.market-info-item {
+    display: flex;
+    height: 50px;
+    font-size: large;
+}
+.market-info-right {
+    color: rgb(114, 111, 111);
+    font-size: medium;
+    gap: 10px;
+}
+.market-item-price {
+    font-size: larger;
+}
 .comment-form {
     display: flex;
     align-items: center;
@@ -197,10 +212,14 @@
 
 .chat-btn {
     border: none;
-    background-color: #7b4541;
+    align-self: center;
     color: white;
+    background-color: #f0a345;
+    border: 2px solid rgb(98, 38, 38);
     border-radius: 8px;
+    font-weight: 600;
     padding: 5px;
+    box-sizing: border-box;
     margin: 0px 5px;
     cursor: pointer;
 }

@@ -1,6 +1,6 @@
 import { Search } from 'lucide-react';
 const MainTop = () => {
-    const numCircles = 11;
+    const numCircles = 12;
     return (
         <div className="main-top-container">
             <div className="animated-background">

@@ -7,15 +7,6 @@ const Footer = () => {
         <footer>
             <div className="footer-top">
                 <img src="/images/logo-dark.png" width={300} />
-                <div>
-                    <ul className="footer-top-list">
-                        {sns.map((icon, index) => (
-                            <li key={index} className="footer-top-list-item"><img src={`/images/${icon}.svg`} width={30} color="white" className="sns-icon" /></li>
-
-                        ))}
-
-                    </ul>
-                </div>
             </div>
             <div>
                 <ul className="footer-list">
@@ -25,7 +16,18 @@ const Footer = () => {
                     <li className="footer-list-item">찾아오시는길</li>
                 </ul>
             </div>
-            <div>&copy; {new Date().getFullYear()} Second-Hand Market. All rights reserved.</div>
+            <div className="footer-bottom">
+                <div>&copy; {new Date().getFullYear()} Second-Hand Market. All rights reserved.</div>
+                <div>
+                    <ul className="footer-bottom-list">
+                        {sns.map((icon, index) => (
+                            <li key={index} className="footer-top-list-item"><img src={`/images/${icon}.svg`} width={30} color="white" className="sns-icon" /></li>
+
+                        ))}
+
+                    </ul>
+                </div>
+            </div>
         </footer>
     );
 };

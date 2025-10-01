@@ -7,6 +7,12 @@
     align-content: center;
     height: 300px;
 }
+.about-info-title {
+    background: linear-gradient(to bottom, #4c2619, #9d5959);
+    font-weight: bold;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
 .about-functions {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
@@ -14,13 +20,14 @@
 
 .about-reviews {
     display: grid;
-    gap: 10px;
+    gap: 20px;
     grid-template-columns: 1fr 1fr 1fr;
 }
 .about-review {
-    border: 1px solid black;
     box-sizing: border-box;
     padding: 10px;
+    border-radius: 10px;
+    box-shadow: rgba(17, 17, 26, 0.05) 0px 1px 0px, rgba(17, 17, 26, 0.1) 0px 0px 8px;
 }
 @import "@radix-ui/colors/black-alpha.css";
 @import "@radix-ui/colors/violet.css";
