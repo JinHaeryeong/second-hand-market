@@ -208,13 +208,13 @@
     font-size: 15px;
     background: rgb(202, 66, 93);
     color: #ffffff;
-    margin: 5px; /*before, after는 좌우 마진 가질 수 있다.*/
+    margin: 5px;
     border-radius: 5px;
     padding: 5px;
 }
 .main-middle-items {
     width: 90%;
-    margin: 0 auto; /* 중앙 정렬을 위해 추가 (선택 사항) */
+    margin: 0 auto;
     display: flex;
     justify-content: space-between;
     /* gap: 15px; */
@@ -229,6 +229,7 @@
     width: 220px;
     flex-shrink: 0; /* 크기가 줄어드는 것을 방지 */
     height: 270px;
+
     perspective: 1000px;
 }
 
@@ -266,6 +267,8 @@
 
 .flip-card-front {
     display: grid;
+    border: 1px solid black;
+
     grid-template-rows: 80% 1fr;
     transform: rotateY(0deg);
 }
