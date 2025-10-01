@@ -1,0 +1,22 @@
+.chat-input-area {
+    height: 40px;
+    display: grid;
+    grid-template-columns: 1fr 20%;
+    box-sizing: border-box;
+}
+
+.chat-send-btn {
+    height: 100%;
+    box-sizing: border-box;
+    border: none;
+    color: white;
+    border-radius: 8px;
+    padding: 5px;
+    background-color: rgb(101, 77, 77);
+}
+.chat-input {
+    border: none;
+    margin-right: 5px;
+    box-sizing: border-box;
+    height: 100%;
+}
