@@ -41,20 +41,23 @@
 .new-icon {
     width: 24px;
     height: 24px;
-
     margin-left: 6px;
-
     vertical-align: middle;
 }
 .notice-info {
     display: flex;
+    justify-content: space-between;
+    padding-bottom: 10px;
     box-shadow: rgba(33, 35, 38, 0.2) 0px 10px 10px -10px;
     margin-bottom: 10px;
 }
 .notice-info-item {
     margin-right: 10px;
 }
-
+.notice-info-right {
+    display: flex;
+    gap: 10px;
+}
 .notice-item {
     display: flex;
     justify-content: space-between;

@@ -4,6 +4,7 @@ import { MessageCircle } from "lucide-react";
 import React, { useState } from 'react';
 import { apiLoadChatRooms } from '../api/chatApi';
 import ChatRoomModal from './ChatRoomModal';
+import { useLocation, useNavigate } from 'react-router-dom';
 // 예시: API 호출 함수 (실제 구현 필요)
 // import { apiLoadChatRooms } from "../api/chatApi"; 
 interface ChatRoomItem {
@@ -20,6 +21,9 @@ const ChatListPopover = () => {
 
     const [isChatModalOpen, setIsChatModalOpen] = useState(false);
     const [currentChatRoomId, setCurrentChatRoomId] = useState<number | null>(null);
+    const navigate = useNavigate();
+    const location = useLocation();
+
 
 
     const handleOpenChange = async (newOpen: boolean) => {
@@ -41,15 +45,23 @@ const ChatListPopover = () => {
     const handleRoomClick = (roomId: number) => {
         setOpen(false); // 팝오버 닫기
 
-        setTimeout(() => {
-            setCurrentChatRoomId(roomId);
-            setIsChatModalOpen(true);
-        }, 50); // 50ms 후 모달 띄우기
+        navigate(location.pathname, {
+            replace: false,
+            state: { modalOpen: true, chatRoomId: roomId }
+        });
+
+
+        setCurrentChatRoomId(roomId);
+        setIsChatModalOpen(true);
     };
 
     const closeChatModal = () => {
         setIsChatModalOpen(false);
         setCurrentChatRoomId(null);
+
+        if (location.state && location.state.modalOpen) {
+            navigate(-1);
+        }
 
     };
 

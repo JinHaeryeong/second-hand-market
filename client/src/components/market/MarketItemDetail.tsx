@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useAuthStore } from "../../stores/authStore";
 import { useItemStore } from "../../stores/marketStore";
 import Modal from "../modal";
@@ -20,6 +20,7 @@ const MarketItemDetail = () => {
     const fetchItemById = useItemStore((s: any) => s.fetchItemById);
     const itemErr = useItemStore((s: any) => s.itemErr);
     const resetItemErr = useItemStore((s: any) => s.resetItemErr);
+    const clearItem = useItemStore((s: any) => s.clearItem);
     const itemId = id ? Number(id) : null;
 
     const [isOpenMdoal, setIsModalOpen] = useState(false);
@@ -32,7 +33,11 @@ const MarketItemDetail = () => {
         if (itemId && !isNaN(itemId)) {
             fetchItemById(itemId);
         }
-    }, [id, fetchItemById]);
+
+        return () => {
+            clearItem();
+        };
+    }, [id, fetchItemById, clearItem]);
 
 
     useEffect(() => {
