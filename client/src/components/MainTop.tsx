@@ -1,6 +1,23 @@
 import { Search } from 'lucide-react';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 const MainTop = () => {
     const numCircles = 12;
+    const navigate = useNavigate();
+    const [searchTerm, setSearchTerm] = useState("");
+
+
+    const handleSearchSubmit = (e: any) => {
+        e.preventDefault();
+
+        if (searchTerm.trim() === '') {
+            alert('검색어를 입력해주세요.');
+            return;
+        }
+
+        navigate(`/market/search?q=${searchTerm.trim()}`);
+
+    };
     return (
         <div className="main-top-container">
             <div className="animated-background">
@@ -19,7 +36,9 @@ const MainTop = () => {
                     <div className='main-top-list-item'>
                         <div className='search'>
                             <div className="search-icon"><Search color='grey' /></div>
-                            <input className="search-input" type='text' placeholder={`사고싶은 물건을 검색하세요!`} minLength={2} />
+                            <form onSubmit={handleSearchSubmit}>
+                                <input className="search-input" type='text' placeholder={`사고싶은 물건을 검색하세요!`} minLength={2} onChange={(e) => setSearchTerm(e.target.value)} />
+                            </form>
                         </div>
                     </div>
 

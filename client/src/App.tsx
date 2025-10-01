@@ -20,6 +20,7 @@ import About from './pages/About';
 
 import "@radix-ui/themes/styles.css";
 import "../src/assets/styles/chat.css"
+import MarketItemSearch from './components/market/MarketItemsSearch';
 function App() {
 
   return (
@@ -37,6 +38,8 @@ function App() {
             <Route path='/notice/edit/:id' element={<NoticeEdit />} />
             <Route path='/noticeWrite' element={<NoticeWrite />} />
             <Route path='/market' element={<Market />} />
+            <Route path='/market' element={<Market />} />
+            <Route path='/market/search' element={<MarketItemSearch />} />
             <Route path='/market/:id' element={<MarketItemDetail />} />
             <Route path='/market/itemWrite' element={<MarketItemWrite />} />
             <Route path='/market/edit/:id' element={<MarketItemEdit />} />

@@ -137,28 +137,20 @@ public class MarketService {
     public ApiResponse<Page<ItemListResponse>> getItemList(Pageable pageable, int findType, String keyword) {
         Page<ItemListResponse> responsePage;
 
-        // 키워드가 없거나 전체 검색 시
-        if (findType == 0 || keyword == null || keyword.equals("")) {
+        boolean isKeywordPresent = keyword != null && !keyword.trim().isEmpty();
+
+        if (isKeywordPresent) {
+            responsePage = itemsRespository.findItemsByTitleOrContentKeyword(keyword, pageable);
+        }
+        else if (findType == 0) {
+            // 키워드가 없으므로, 전체 목록 쿼리를 실행합니다.
             responsePage = itemsRespository.findAllWithCategoryName(pageable);
         }
-        // 제목 검색
-        else if (findType == 1) {
-            responsePage = itemsRespository.findByTitleContainingIgnoreCase(keyword, pageable);
-        }
-        // 작성자 ID 검색
-        else if (findType == 2) {
-            responsePage = itemsRespository.findByUserIdContainingIgnoreCase(keyword, pageable);
-        }
-        // 내용 검색
-        else if (findType == 3) {
-            responsePage = itemsRespository.findByContentContainingIgnoreCase(keyword, pageable);
-        }
-        // 그 외
+
         else {
             responsePage = Page.empty(pageable);
         }
 
-        // Repository에서 이미 DTO Projection을 사용했으므로 추가 변환(map) 로직은 필요 없습니다.
         return ApiResponse.success("상품 목록 조회 성공", responsePage);
     }
 
