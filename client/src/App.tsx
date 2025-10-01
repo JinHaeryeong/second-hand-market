@@ -16,7 +16,10 @@ import Market from './pages/Market';
 import MarketItemWrite from './components/market/MarketItemWrite';
 import MarketItemDetail from './components/market/MarketItemDetail';
 import MarketItemEdit from './components/market/MarketItemEdit';
+import About from './pages/About';
 
+import "@radix-ui/themes/styles.css";
+import "../src/assets/styles/chat.css"
 function App() {
 
   return (
@@ -37,7 +40,7 @@ function App() {
             <Route path='/market/:id' element={<MarketItemDetail />} />
             <Route path='/market/itemWrite' element={<MarketItemWrite />} />
             <Route path='/market/edit/:id' element={<MarketItemEdit />} />
-            <Route path='/about' />
+            <Route path='/about' element={<About />} />
           </Route>
           <Route path='/admin-page' element={<AdminLayout />}>
             <Route index element={<DashBoard />} />

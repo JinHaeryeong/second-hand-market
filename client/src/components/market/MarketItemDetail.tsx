@@ -9,7 +9,6 @@ import Avatar from "react-avatar";
 import axios from "axios";
 import { apiChatRequest } from "../../api/chatApi";
 import ChatRoomModal from "../ChatRoomModal";
-import "../../assets/styles/chat.css"
 const MarketItemDetail = () => {
     const { id } = useParams();
     const navigate = useNavigate();
@@ -190,7 +189,6 @@ const MarketItemDetail = () => {
                     isOpen={isChatModalOpen}
                     onClose={closeChatModal}
                     chatRoomId={currentChatRoomId}
-                    itemId={itemId}
                 />
             )}
         </div>

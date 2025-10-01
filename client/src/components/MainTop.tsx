@@ -11,7 +11,7 @@ const MainTop = () => {
             </div>
             <div className="main-top-desc">
                 <div><img src="/images/main.png" /></div>
-                <div className='main-top-desc-bottom'>사고싶은 물건을 찾고, 구매하기 가장 좋은 장소</div>
+                <div className='main-top-desc-bottom'>물건을 찾고, 구매하기 가장 좋은 장소</div>
             </div>
             <div>
                 <div className="main-top-list">
