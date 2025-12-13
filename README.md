@@ -236,6 +236,10 @@ https://nodejs.org/en/blog/release/v22.18.0
 | 판매글 수정 | ![판매글 수정](https://github.com/user-attachments/assets/d8705371-82a4-4444-8880-5d1d40ff4451)|
 | 가격 제시 | ![가격 제시](https://github.com/user-attachments/assets/7b59d9f4-3d6e-428a-bb73-ac0cf07a6cf9)|
 | 판매글(판매자 화면) | ![판매자 화면](https://github.com/user-attachments/assets/8b3ea9ab-ffb9-4209-8120-43825971c0ec)|
+| 채팅 | ![채팅](https://github.com/user-attachments/assets/dbad14ef-1e7a-4e28-9556-7a184c1df15b)|
+| 검색 | ![검색](https://github.com/user-attachments/assets/9720c809-c7d5-447f-9085-190155abea6d)|
+| 관리자 페이지(유저) | ![관리자페이지(유저)](https://github.com/user-attachments/assets/c499452e-3735-4645-9e6e-e44abb86c087)|
+| 관리자 페이지(상품) | ![관리자페이지(상품)](https://github.com/user-attachments/assets/b12bf6c4-91e7-4088-b88f-7b1f9bdd383e)|
 
 
 
